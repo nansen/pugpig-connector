@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>1</id>
+  <link rel="self" type="application/atom+xml" href="URL_TO_THIS_DOCUMENT"/>
+  <title type="text">Sample Edition</title>
+  <subtitle type="text">This is a sample edition with 2 pages</subtitle>
+  <author>
+    <name>John Doe</name>
+  </author>
+  <updated>2011-07-11T12:30:24Z</updated>
+
+  <entry>
+    <id>e1</id>
+    <link rel="alternate" type="text/html" href="page1.html" />
+    <link rel="related" type="text/cache-manifest" href="page1.manifest" />
+    <title type="text">Page 1</title>
+    <summary type="text">Page 1 summary</summary>
+    <updated>2011-07-11T12:30:24Z</updated>
+  </entry>
+
+  <entry>
+    <id>e2</id>
+    <link rel="alternate" type="text/html" href="page2.html" />
+    <link rel="related" type="text/cache-manifest" href="page2.manifest" />
+    <title type="text">Page 2</title>
+    <summary type="text">Page 2 summary</summary>
+    <updated>2011-07-11T12:30:25Z</updated>
+  </entry>
+</feed>

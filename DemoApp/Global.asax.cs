@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace DemoApp
 {
-    public class EPiServerApplication : EPiServer.Global
+    public class EPiServerApplication : EPiPugPigConnector.Global
     {
         protected void Application_Start()
         {
