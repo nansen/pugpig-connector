@@ -1,0 +1,7 @@
+﻿CACHE MANIFEST
+
+# Normally each HTML page would have its own HTML5 offline manifest
+# However, for this demo we are using a single manifest for all the
+# assets for the every page in the demo
+
+img/nansen.jpg

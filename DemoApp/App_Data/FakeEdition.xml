@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>1</id>
-  <link rel="self" type="application/atom+xml" href="edition1.xml"/>
+  <link rel="self" type="application/atom+xml" href="http://epipugpigdemo.azurewebsites.net/edition1.xml"/>
   <title type="text">Sample Edition</title>
   <subtitle type="text">This is a sample edition with 2 pages</subtitle>
   <author>
@@ -11,8 +11,8 @@
 
   <entry>
     <id>e1</id>
-    <link rel="alternate" type="text/html" href="alloy-plan/download-alloy-plan/index.html" />
-    <link rel="related" type="text/cache-manifest" href="page1.manifest" />
+    <link rel="alternate" type="text/html" href="alloy-plan/index.html" />
+    <link rel="related" type="text/cache-manifest" href="static/everything-offline.manifest" />
     <title type="text">Page 1</title>
     <summary type="text">Page 1 summary</summary>
     <updated>2011-07-11T12:30:24Z</updated>
@@ -20,8 +20,8 @@
 
   <entry>
     <id>e2</id>
-    <link rel="alternate" type="text/html" href="alloy-plan/download-alloy-plan/start-downloading/index.html" />
-    <link rel="related" type="text/cache-manifest" href="page2.manifest" />
+    <link rel="alternate" type="text/html" href="alloy-plan/index.html" />
+    <link rel="related" type="text/cache-manifest" href="static/everything-offline.manifest" />
     <title type="text">Page 2</title>
     <summary type="text">Page 2 summary</summary>
     <updated>2011-07-11T12:30:25Z</updated>
