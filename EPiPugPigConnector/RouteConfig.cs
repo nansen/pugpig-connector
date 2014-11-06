@@ -9,6 +9,7 @@ namespace EPiPugPigConnector
         {
             routes.MapRoute("editions.xml", "editions.xml", new { controller = "Editions", action = "Editions" });
             routes.MapRoute("edition.xml", "edition{id}.xml", new {controller = "Editions", action = "Edition"});
+            routes.MapRoute("manifest", "generatemanifest", new {controller = "Manifest", action = "Index"});
         }
     }
 }

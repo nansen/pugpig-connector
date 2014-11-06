@@ -1,7 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace EPiPugPigConnector
+namespace EPiPugPigConnector.Controllers
 {
     /// <summary>
     /// Controller handling editions.xml requests. 
