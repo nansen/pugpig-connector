@@ -179,6 +179,7 @@
     <Compile Include="Controllers\EditionsController.cs" />
     <Compile Include="Controllers\ManifestController.cs" />
     <Compile Include="Editions\PageTreeEditionsGenerator.cs" />
+    <Compile Include="Fakes\FakeManifestFactory.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Manifest\DummyWorkerRequest.cs" />

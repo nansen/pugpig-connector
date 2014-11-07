@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Web;
-using System.Web.Compilation;
 using System.Web.Mvc;
-using System.Web.UI;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Data.Dynamic;
@@ -19,7 +15,7 @@ using EPiServer.Web;
 
 namespace EPiPugPigConnector.Manifest
 {
-    public class ManifestFactory
+    public class ManifestFactory : IManifestFactory
     {
         //#region Singleton
 
@@ -58,15 +54,6 @@ namespace EPiPugPigConnector.Manifest
         {
              LocalURLs = new Dictionary<string, string>();
              _contentRepository = contentRepository;
-        }
-
-        public void AddImagesForJQueryMobile()
-        {
-            //UpdateFile("/modules/MobilePack.Core/images/icons-18-black.png", "/modules/MobilePack.Core/images/icons-18-black.png");
-            //UpdateFile("/modules/MobilePack.Core/images/icons-18-white.png", "/modules/MobilePack.Core/images/icons-18-white.png");
-            //UpdateFile("/modules/MobilePack.Core/images/icons-36-black.png", "/modules/MobilePack.Core/images/icons-36-black.png");
-            //UpdateFile("/modules/MobilePack.Core/images/icons-36-white.png", "/modules/MobilePack.Core/images/icons-36-white.png");
-            //UpdateFile("/modules/MobilePack.Core/images/ajax-loader.png", "/modules/MobilePack.Core/images/ajax-loader.png");
         }
 
         public ManifestModel LoadModel()
@@ -117,8 +104,6 @@ namespace EPiPugPigConnector.Manifest
         /// <returns></returns>
         public string MakeManifestFileAsString()
         {
-            AddImagesForJQueryMobile();
-
             StringBuilder strb = new StringBuilder();
             strb.Append("CACHE MANIFEST" + Environment.NewLine);
             strb.AppendFormat("# This file was generated at {0}" + Environment.NewLine, DateTime.Now);
@@ -158,7 +143,7 @@ namespace EPiPugPigConnector.Manifest
             }
         }
 
-        public void UpdateFile(string key, string file)
+        private void UpdateFile(string key, string file)
         {
             //never add the manifest file to the offline cache
             if (!file.ToLower().Contains(".manifest"))
@@ -217,14 +202,14 @@ namespace EPiPugPigConnector.Manifest
         /// </summary>
         /// <param name="pd"></param>
         /// <returns></returns>
-        public string GetFriendlyUrl(PageData pd)
+        private string GetFriendlyUrl(PageData pd)
         {
             UrlBuilder url = new UrlBuilder(pd.LinkURL); 
             EPiServer.Global.UrlRewriteProvider.ConvertToExternal(url, pd.PageLink, System.Text.UTF8Encoding.UTF8);
             return url.ToString();
         }
 
-        public virtual string GetHtmlFromPage(PageData pageData)
+        private string GetHtmlFromPage(PageData pageData)
         {
             string pageVersionUri = GetPageVersionUri(pageData);
 
@@ -352,5 +337,10 @@ namespace EPiPugPigConnector.Manifest
             return new DummyWorkerRequest(HttpContext.Current.Request.PhysicalApplicationPath, localPath, Page, Query, HttpContext.Current.Request.Headers["Host"], (TextWriter)stringWriter);
         }
     }
-    
+
+    public interface IManifestFactory
+    {
+        void WriteManifestFile();
+        void FindPagesAndAddThem();
+    }
 }

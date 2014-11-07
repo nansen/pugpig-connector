@@ -7,11 +7,13 @@ namespace EPiPugPigConnector.Controllers
 {
     public class ManifestController : Controller
     {
-        private readonly IContentRepository _contentRepository; 
+        private readonly IContentRepository _contentRepository;
+        private readonly IManifestFactory _manifestFactory;
 
-        public ManifestController(IContentRepository contentRepository)
+        public ManifestController(IContentRepository contentRepository, IManifestFactory manifestFactory)
         {
             _contentRepository = contentRepository;
+            _manifestFactory = manifestFactory;
         }
 
         public ActionResult Index()
