@@ -40,6 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DemoApp\packages\Castle.Windsor.3.2.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="CsQuery">
+      <HintPath>..\DemoApp\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="EPiServer, Version=7.16.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DemoApp\packages\EPiServer.CMS.Core.7.16.0\lib\net45\EPiServer.dll</HintPath>
@@ -198,6 +201,10 @@
     <Compile Include="Fakes\Pages\FakeEditionPage.cs" />
     <Compile Include="Fakes\Pages\FakeEditionsPage.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="HttpModules\RelativeUrlModule\CustomHtmlStream.cs" />
+    <Compile Include="HttpModules\RelativeUrlModule\HtmlProcessor.cs" />
+    <Compile Include="HttpModules\RelativeUrlModule\Module.cs" />
+    <Compile Include="HttpModules\ToRelativeUrlActionFilterAttribute.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Manifest\DummyWorkerRequest.cs" />
     <Compile Include="Manifest\ManifestFactory.cs" />
@@ -225,6 +232,7 @@
     <EmbeddedResource Include="Resources\editionsTemplateXsd.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
