@@ -1,0 +1,13 @@
+﻿OPDS = Open Publication Distribution System, Xml based feed
+-----------------------------------------------------------
+implement the feed:
+https://pugpig.zendesk.com/hc/en-us/articles/201079186-How-To-Write-A-Connector#step_1discovering_the_list_of_editions
+
+OPDS definition
+https://pugpig.zendesk.com/hc/en-us/articles/200948376-Document-Discovery
+
+xml datetime iso 8601:
+http://stackoverflow.com/questions/6314154/generate-datetime-format-for-xml
+
+opds validator:
+http://opds-validator.appspot.com/

@@ -1,16 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9D35CCDD-CDD8-4E9A-9B33-511A3AAB1BFB}</ProjectGuid>
+    <ProjectGuid>{9A0BC8DF-C332-4DB3-AA06-C4B466F303F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EPiPugPigConnector</RootNamespace>
-    <AssemblyName>EPiPugPigConnector</AssemblyName>
+    <RootNamespace>EPiPugPigConnector.Tests</RootNamespace>
+    <AssemblyName>EPiPugPigConnector.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\DemoApp\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -33,11 +38,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
       <HintPath>..\DemoApp\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
       <HintPath>..\DemoApp\packages\Castle.Windsor.3.2.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer, Version=7.16.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
@@ -51,10 +56,6 @@
     <Reference Include="EPiServer.BaseLibrary, Version=7.16.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DemoApp\packages\EPiServer.CMS.Core.7.16.0\lib\net45\EPiServer.BaseLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="EPiServer.Cms.Shell.UI, Version=6.1.379.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DemoApp\packages\EPiServer.CMS.UI.Core.7.16.0\lib\net45\EPiServer.Cms.Shell.UI.dll</HintPath>
     </Reference>
     <Reference Include="EPiServer.Configuration, Version=7.16.0.0, Culture=neutral, PublicKeyToken=8fe83dea738b45b7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,9 +117,6 @@
       <Private>True</Private>
       <HintPath>..\DemoApp\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\DemoApp\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\DemoApp\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -128,29 +126,16 @@
       <HintPath>..\DemoApp\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
       <HintPath>..\DemoApp\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DemoApp\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\DemoApp\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DemoApp\packages\Microsoft.AspNet.WebApi.Core.5.1.1\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DemoApp\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -169,76 +154,70 @@
       <Private>True</Private>
       <HintPath>..\DemoApp\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\EditionsController.cs" />
-    <Compile Include="Controllers\ManifestController.cs" />
-    <Compile Include="Editions\EditionsXml\XmlExtensions.cs" />
-    <Compile Include="Editions\EditionsXml\XmlTemplateLoader.cs" />
-    <Compile Include="Editions\Interfaces\Editions\IEditionsXmlFeedRoot.cs" />
-    <Compile Include="Editions\PageTreeEditionsGenerator.cs" />
-    <Compile Include="Editions\EditionsXml\XmlFactory.cs" />
-    <Compile Include="EPiExtensions\ContentExtensions.cs" />
-    <Compile Include="EPiExtensions\ContentReferenceExtensions.cs" />
-    <Compile Include="EPiExtensions\PageDataExtensions.cs" />
-    <Compile Include="EPiExtensions\PageReferenceExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EPiExtensions\QueryString\QueryStringBuilder.cs" />
-    <Compile Include="EPiExtensions\UrlExtensions.cs" />
-    <Compile Include="EPiExtensions\UrlHelperExtensions.cs" />
-    <Compile Include="Fakes\FakeManifestFactory.cs" />
-    <Compile Include="Fakes\Pages\FakeEditionPage.cs" />
-    <Compile Include="Fakes\Pages\FakeEditionsPage.cs" />
-    <Compile Include="Global.cs" />
-    <Compile Include="Initializer.cs" />
-    <Compile Include="Manifest\DummyWorkerRequest.cs" />
-    <Compile Include="Manifest\ManifestFactory.cs" />
-    <Compile Include="Manifest\ManifestModel.cs" />
-    <Compile Include="Editions\Interfaces\Editions\IEditionsXmlFeedEntry.cs" />
-    <Compile Include="Models\Pages\EditionPage.cs" />
-    <Compile Include="Models\Pages\EditionsContainerPage.cs" />
-    <Compile Include="Models\Pages\EditionsPageHelper.cs" />
-    <Compile Include="Mvc\StructureMapDependencyResolver.cs" />
-    <Compile Include="Fakes\FakePageTreeEditionsGenerator.cs" />
-    <Compile Include="IEditionsGenerator.cs" />
+    <Compile Include="Editions\EditionsXml\TestEditionsXmlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Resources.Designer.cs">
+    <Compile Include="Resources\Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
-    <Compile Include="RouteConfig.cs" />
+    <Compile Include="Stopwatch.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\editionsTemplateXsd.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ProjectReference Include="..\EPiPugPigConnector\EPiPugPigConnector.csproj">
+      <Project>{9d35ccdd-cdd8-4e9a-9b33-511a3aab1bfb}</Project>
+      <Name>EPiPugPigConnector</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Docs\Opds feed docs.txt" />
-    <EmbeddedResource Include="Resources\editionsEntryTemplateXml.xml" />
-    <EmbeddedResource Include="Resources\editionsTemplateXml.xml" />
-    <EmbeddedResource Include="Resources\editionsRootTemplateXml.xml" />
-    <Content Include="Docs\Overview project urls.txt" />
-    <Content Include="EPiExtensions\source.txt" />
-    <Content Include="Docs\Modifications to apply to the Web project.txt" />
+    <Content Include="Resources\editionsTestXml.xml" />
+    <Content Include="Resources\editionsNoEntriesTestXml.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Editions\Interfaces\Edition\" />
+    <EmbeddedResource Include="Resources\Resource1.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

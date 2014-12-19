@@ -1,0 +1,4 @@
+﻿http://pugpig.local/editions.xml - generates the opds main xml feed.
+http://pugpig.local/generatemanifest - generates the offline html5 manifest
+
+

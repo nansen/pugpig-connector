@@ -17,7 +17,7 @@ namespace EPiPugPigConnector.Controllers
         public ActionResult Editions()
         {
             string lang = null;
-            var editions = _generator.GetEditions(lang);
+            string editions = _generator.GetEditions(lang);
             if (editions == null)
             {
                 return new HttpNotFoundResult();

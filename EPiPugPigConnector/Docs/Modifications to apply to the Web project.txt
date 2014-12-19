@@ -1,0 +1,14 @@
+﻿Modifications to apply to the Web project
+==========================================
+These modifications will be needed on the web project to install this as a "plugin"
+on a EPiServer site.
+The goal is to be able to add this project with some form of installer / powershell script, 
+so that we can install this as a “plugin” to new EPiServer websites.
+==========================================
+
+* Create a Editions Page template directly under the CMS root page, and add values to props.
+- you should only have one Editions Page per website. (it is used to render the editions.xml feed)
+
+* Create a Edition Page template and add values to props.
+* There must be some sort of content pages published below the Edition Page root.
+* Publish the editions and editions page to generate the OPDS feed. / offline manifest file.
