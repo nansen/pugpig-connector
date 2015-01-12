@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
 using System.Xml.Linq;
 using EPiPugPigConnector.Editions.EditionsXml;
 using EPiPugPigConnector.Models.Pages;
@@ -44,8 +45,8 @@ namespace EPiPugPigConnector.Editions
                 throw new NullReferenceException("The editions container page or editions childpages was not found/not published.");
             }
             
-            XDocument editionsXml = XmlFactory.GenerateEditionsXmlFrom(containerPage, editionEntries);
-            return editionsXml.ToString();
+            var xmlString = XmlFactory.GenerateEditionsXmlFrom(containerPage, editionEntries);
+            return xmlString;
         }
 
         public string GetEdition(string id)

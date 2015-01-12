@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -38,15 +41,34 @@ namespace EPiPugPigConnector.Tests.Editions.EditionsXml
             };
 
             //Act
-            XDocument editionsXml = XmlFactory.GenerateEditionsXmlFrom(editionsRootPage, editionEntries);
-
+            string resultXml = XmlFactory.GenerateEditionsXmlFrom(editionsRootPage, editionEntries);
             //TODO: validate the feedxml at http://opds-validator.appspot.com/ (do it only manually perhaps?)
 
+
             //Assert
-            Assert.IsNotNull(editionsXml);
+            string expextedXmlBeginning =
+                "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" + System.Environment.NewLine +
+                "<feed xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:opds=\"http://opds-spec.org/2010/catalog\" xmlns:app=\"http://www.w3.org/2007/app\" xmlns=\"http://www.w3.org/2005/Atom\">";
+
+            Assert.IsTrue(resultXml.StartsWith(expextedXmlBeginning));
         }
 
-        
+        [TestMethod]
+        public void Test_Create_Xml_Template_Model_From_Pages()
+        {
+            //Arrange 
+            IEditionsXmlFeedRoot editionsPage = new FakeEditionsPage();
+            IEditionsXmlFeedEntry editionPage = new FakeEditionPage();
+            //Act
+            //Assert
+            Assert.IsFalse(
+                    string.IsNullOrEmpty(editionsPage.FeedId) &&
+                    string.IsNullOrEmpty(editionsPage.FeedTitle) &&
+                    string.IsNullOrEmpty(editionPage.EntryId) &&
+                    string.IsNullOrEmpty(editionPage.EntryTitle)
+                );
+        }
+
         //TODO: validate xml against against a xsd schema, 
         //to create a schema file: when active xml file in vs, menu xml -> create schema file.
         ////get xsd schema file
@@ -75,21 +97,5 @@ namespace EPiPugPigConnector.Tests.Editions.EditionsXml
         //    //Assert
         //    Assert.IsTrue(xmlTemplate != null);
         //}
-
-        [TestMethod]
-        public void Test_Create_Xml_Template_Model_From_Pages()
-        {
-            //Arrange 
-            IEditionsXmlFeedRoot editionsPage = new FakeEditionsPage();
-            IEditionsXmlFeedEntry editionPage = new FakeEditionPage();
-            //Act
-            //Assert
-            Assert.IsFalse(
-                    string.IsNullOrEmpty(editionsPage.FeedId) &&
-                    string.IsNullOrEmpty(editionsPage.FeedTitle) &&
-                    string.IsNullOrEmpty(editionPage.EntryId) &&
-                    string.IsNullOrEmpty(editionPage.EntryTitle)
-                );
-        }
     }
 }

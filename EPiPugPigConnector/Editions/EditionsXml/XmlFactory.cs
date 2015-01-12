@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -12,13 +14,15 @@ namespace EPiPugPigConnector.Editions.EditionsXml
     {
         private static XNamespace _atomNS = "http://www.w3.org/2005/Atom";
 
-        public static XDocument GenerateEditionsXmlFrom(IEditionsXmlFeedRoot rootData, IEnumerable<IEditionsXmlFeedEntry> entries)
+        public static string GenerateEditionsXmlFrom(IEditionsXmlFeedRoot rootData, IEnumerable<IEditionsXmlFeedEntry> entries)
         {
             //create the xml
             XDocument rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             AddFeedXml(rootData, rootDocument);
             AddEntriesXml(entries, rootDocument);
-            return rootDocument;
+
+            string resultXml = ForceXmlToUtf8Output(rootDocument);
+            return resultXml;
         }
 
         private static void AddFeedXml(IEditionsXmlFeedRoot rootData, XDocument rootDocument)
@@ -95,6 +99,44 @@ namespace EPiPugPigConnector.Editions.EditionsXml
                 link.SetAttributeValue("type", "application/atom+xml;profile=opds-catalog;kind=acquisition");
                 link.SetAttributeValue("href", feedLinkHref);
             return link;
+        }
+        
+        private static string ForceXmlToUtf8Output(XDocument xDocument)
+        {
+            //to avoid problems with xml output string is utf16 and formatting fixes:
+            //http://www.undermyhat.org/blog/2009/08/tip-force-utf8-or-other-encoding-for-xmlwriter-with-stringbuilder/
+            //http://stackoverflow.com/questions/3871738/force-xdocument-to-write-to-string-with-utf-8-encoding
+            //https://social.msdn.microsoft.com/Forums/vstudio/en-US/96616c0d-620d-4023-b6be-09351081b3c6/linq-to-xml-xdeclaration-missing-from-output?forum=netfxbcl
+
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Encoding = Encoding.UTF8,
+                NamespaceHandling = NamespaceHandling.OmitDuplicates,
+                Indent = true
+            };
+
+            XmlWriter xmlWriter = null;
+            MemoryStream memoryStream = null;
+            string xmlResultString = null;
+
+            try
+            {
+                memoryStream = new MemoryStream();
+                xmlWriter = XmlWriter.Create(memoryStream, settings);
+                xDocument.Save(xmlWriter); //persist XDocument to xmlwriter
+                xmlWriter.Flush();
+                memoryStream.Flush();
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                StreamReader streamReader = new StreamReader(memoryStream);
+                xmlResultString = streamReader.ReadToEnd();
+            }
+            finally
+            {
+                xmlWriter.Close();
+                memoryStream.Close();
+            }
+
+            return xmlResultString;
         }
     }
 }
