@@ -211,9 +211,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap.Net4">
-      <HintPath>packages\structuremap.3.1.4.143\lib\net40\StructureMap.Net4.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
