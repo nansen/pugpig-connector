@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using StructureMap.Construction;
 
 namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
 {
@@ -13,15 +14,17 @@ namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
 
         void context_PostRequestHandlerExecute(object sender, EventArgs e)
         {
-            var httpApplication = (HttpApplication)sender;
-
-            if (httpApplication.Response.ContentType.Equals("text/html"))
+            if (Properties.Settings.Default.EnableHtmlUrlRewriteModule)
             {
-                httpApplication.Response.Clear();
-                //Process current html page with CustomHtmlStream:
-                httpApplication.Response.Filter = new CustomHtmlStream(
-                    httpApplication.Response.Filter,
-                    httpApplication.Request.Url);
+                var httpApplication = (HttpApplication) sender;
+
+                if (httpApplication.Response.ContentType.Equals("text/html"))
+                {
+                    //Process current html page with CustomHtmlStream:
+                    httpApplication.Response.Filter = new CustomHtmlStream(
+                        httpApplication.Response.Filter,
+                        httpApplication.Request.Url);
+                }
             }
         }
 
