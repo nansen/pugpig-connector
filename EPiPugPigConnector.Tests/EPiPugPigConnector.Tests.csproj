@@ -170,6 +170,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Editions\EditionsXml\TestEditionXmlFactory.cs" />
     <Compile Include="Editions\EditionsXml\TestEditionsXmlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource1.Designer.cs">

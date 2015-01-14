@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
+using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 
-namespace EPiPugPigConnector.Models.Pages
+namespace EPiPugPigConnector.Editions.Models.Pages
 {
     [ContentType(
         GUID = "3ADE6674-91EF-4182-AA2C-7C83D803B569",
@@ -17,8 +15,10 @@ namespace EPiPugPigConnector.Models.Pages
         Description = "Edition page for the pupig feed, can be several editions for each feed",
         Order = 30002
     )]
-    public class EditionPage : PageData, IEditionsXmlFeedEntry
+    public class EditionPage : PageData, IEditionsEntryElement, IEditionFeedElement
     {
+        #region IEditionsEntryElement - Editions.xml feed specific
+
         /// <summary>
         /// Gets or sets a value indicating whether the Changed property should be updated on every page publish.
         /// Default is that changed date only gets updated when the "mark as changed" checkbox is checked. / or the first time the page is published.
@@ -61,38 +61,87 @@ namespace EPiPugPigConnector.Models.Pages
             set { this.SetPropertyValue(p => p.EntryLinkCoverImage, value); }
         }
 
-        #region NonEditorProperties
+            #region NonEditorProperties
+
+            [ScaffoldColumn(false)]
+            public string EntryId
+            {
+                get { return EditionsHelper.GetEntryId(this); }
+                set { throw new NotImplementedException(); }
+            }
+
+            [ScaffoldColumn(false)]
+            public string EntryUpdated
+            {
+                get { return GetEntryUpdatedFormatted(this.Changed); }
+                set { this.SetPropertyValue(p => p.EntryUpdated, value); }
+            }
+
+            public string GetEntryUpdatedFormatted(DateTime dateTimeUpdated)
+            {
+                return XmlHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
+            }
+
+            [ScaffoldColumn(false)]
+            public string EntryDcTermsIssued
+            {
+                get { return EditionsHelper.EntryDcTermsIssued(this.Changed); }
+                set { }
+            }
+
+            [ScaffoldColumn(false)]
+            public string EntryLinkEditionXml {
+                get { return EditionsHelper.GetEntryLinkEditionXml(this); }
+                set { } 
+            }
+
+            #endregion NonEditorProperties
+
+        #endregion IEditionsEntryElement
+
+
+
+
+        #region IEditionFeedElement - Edition.xml feed specific props.
 
         [ScaffoldColumn(false)]
-        public string EntryId
+        public string FeedId
         {
-            get { return EditionsPageHelper.GetEntryId(this); }
+            get { return this.EntryId; }
             set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string EntryUpdated
+        public string FeedLink
         {
-            get { return GetEntryUpdatedFormatted(this.Changed); }
-            set { this.SetPropertyValue(p => p.EntryUpdated, value); }
-        }
-
-        public string GetEntryUpdatedFormatted(DateTime dateTimeUpdated)
-        {
-            return EditionsPageHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
+            get { return this.EntryLinkEditionXml; }
+            set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string EntryDcTermsIssued
+        public string FeedTitle
         {
-            get { return EditionsPageHelper.EntryDcTermsIssued(this.Changed); }
-            set { }
+            get { return this.EntryTitle; }
+            set { throw new NotImplementedException(); }
+        }
+
+        [Display(GroupName = SystemTabNames.Content, Order = 125, Name = "Edition subtitle",
+            Description = "E.g. \"This is a sample edition with 2 pages")]
+        [CultureSpecific]
+        public string FeedSubtitle { get; set; }
+
+        [ScaffoldColumn(false)]
+        public string FeedAuthorName
+        {
+            get { return this.EntryAuthorName; }
+            set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string EntryLinkEditionXml {
-            get { return EditionsPageHelper.GetEntryLinkEditionXml(this); }
-            set { } 
+        public string FeedUpdated
+        {
+            get { return this.EntryUpdated; }
+            set { throw new NotImplementedException(); }
         }
 
         #endregion

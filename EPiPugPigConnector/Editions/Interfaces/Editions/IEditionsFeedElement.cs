@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EPiPugPigConnector.Editions.Interfaces.Editions
 {
     /// <summary>
     /// The interface for the Editions.xml OPDS feed.
     /// </summary>
-    public interface IEditionsXmlFeedRoot
+    public interface IEditionsFeedElement
     {
         /// <summary>
         /// com.mycompany.editions

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
+using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 
-namespace EPiPugPigConnector.Models.Pages
+namespace EPiPugPigConnector.Editions.Models.Pages
 {
     [ContentType(
         GUID = "7135D46A-098A-4E25-AA7B-CC076720AAD4",
@@ -18,7 +15,7 @@ namespace EPiPugPigConnector.Models.Pages
         Order = 30001
     )]
     [AvailableContentTypes(Include = new []{ typeof(EditionPage) })]
-    public class EditionsContainerPage : PageData, IEditionsXmlFeedRoot
+    public class EditionsContainerPage : PageData, IEditionsFeedElement
     {
         /// <summary>
         /// Gets or sets a value indicating whether the Changed property should be updated on every page publish.
@@ -57,14 +54,12 @@ namespace EPiPugPigConnector.Models.Pages
         [Required]
         public virtual string FeedTitle { get; set; }
 
-
-
-
+        
         #region NonEditorProperties
 
         [ScaffoldColumn(false)]
         public string FeedLinkHref { 
-            get { return EditionsPageHelper.GetLinkHref(this); } 
+            get { return EditionsHelper.GetLinkHref(); } 
             set { }
         }
 
@@ -77,7 +72,7 @@ namespace EPiPugPigConnector.Models.Pages
         
         public string GetFeedUpdatedFormatted(DateTime dateTimeUpdated)
         {
-            return EditionsPageHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
+            return XmlHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
         }
 
         #endregion

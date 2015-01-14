@@ -183,11 +183,18 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\EditionsController.cs" />
     <Compile Include="Controllers\ManifestController.cs" />
-    <Compile Include="Editions\EditionsXml\XmlExtensions.cs" />
-    <Compile Include="Editions\EditionsXml\XmlTemplateLoader.cs" />
-    <Compile Include="Editions\Interfaces\Editions\IEditionsXmlFeedRoot.cs" />
+    <Compile Include="Editions\Factories\EditionXmlFactory.cs" />
+    <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
+    <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
+    <Compile Include="Editions\UrlHelper.cs" />
+    <Compile Include="Editions\XmlDateTimeIso8601.cs" />
+    <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
+    <Compile Include="Editions\XmlHelper.cs" />
+    <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
+    <Compile Include="XmlExtensions.cs" />
+    <Compile Include="Editions\Interfaces\Editions\IEditionsFeedElement.cs" />
     <Compile Include="Editions\PageTreeEditionsGenerator.cs" />
-    <Compile Include="Editions\EditionsXml\XmlFactory.cs" />
+    <Compile Include="Editions\Factories\EditionsXmlFactory.cs" />
     <Compile Include="EPiExtensions\ContentExtensions.cs" />
     <Compile Include="EPiExtensions\ContentReferenceExtensions.cs" />
     <Compile Include="EPiExtensions\PageDataExtensions.cs" />
@@ -209,10 +216,10 @@
     <Compile Include="Manifest\DummyWorkerRequest.cs" />
     <Compile Include="Manifest\ManifestFactory.cs" />
     <Compile Include="Manifest\ManifestModel.cs" />
-    <Compile Include="Editions\Interfaces\Editions\IEditionsXmlFeedEntry.cs" />
-    <Compile Include="Models\Pages\EditionPage.cs" />
-    <Compile Include="Models\Pages\EditionsContainerPage.cs" />
-    <Compile Include="Models\Pages\EditionsPageHelper.cs" />
+    <Compile Include="Editions\Interfaces\Editions\IEditionsEntryElement.cs" />
+    <Compile Include="Editions\Models\Pages\EditionPage.cs" />
+    <Compile Include="Editions\Models\Pages\EditionsContainerPage.cs" />
+    <Compile Include="Editions\Models\Pages\Helpers\EditionsHelper.cs" />
     <Compile Include="Mvc\StructureMapDependencyResolver.cs" />
     <Compile Include="Fakes\FakePageTreeEditionsGenerator.cs" />
     <Compile Include="IEditionsGenerator.cs" />
@@ -253,9 +260,7 @@
     <Content Include="EPiExtensions\source.txt" />
     <Content Include="Docs\Modifications to apply to the Web project.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Editions\Interfaces\Edition\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

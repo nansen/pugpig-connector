@@ -7,10 +7,9 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using EPiPugPigConnector.Editions.EditionsXml;
+using EPiPugPigConnector.Editions.Factories;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Fakes.Pages;
-using EPiPugPigConnector.Models.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EPiPugPigConnector.Tests.Editions.EditionsXml
@@ -22,26 +21,26 @@ namespace EPiPugPigConnector.Tests.Editions.EditionsXml
         public void Test_Generate_Editions_Xml()
         {
             //Arrange 
-            IEditionsXmlFeedRoot editionsRootPage = new FakeEditionsPage();
+            IEditionsFeedElement editionsRootPage = new FakeEditionsPage();
 
-            IEditionsXmlFeedEntry editionPage1 = new FakeEditionPage(
+            IEditionsEntryElement editionPage1 = new FakeEditionPage(
                 issuedAndUpdated: DateTime.Now.AddMonths(-2),
                 authorName: "Arnold Schwarzenegger",
                 entryTitle: "The body building magazine issue #4564");
 
-            IEditionsXmlFeedEntry editionPage2 = new FakeEditionPage(
+            IEditionsEntryElement editionPage2 = new FakeEditionPage(
                 issuedAndUpdated: DateTime.Now.AddMonths(-1),
                 authorName: "Abraham Lincoln",
                 entryTitle: "Christmas Magazine #1");
 
-            IEnumerable<IEditionsXmlFeedEntry> editionEntries = new List<IEditionsXmlFeedEntry>
+            IEnumerable<IEditionsEntryElement> editionEntries = new List<IEditionsEntryElement>
             {
                 editionPage1,
                 editionPage2
             };
 
             //Act
-            string resultXml = XmlFactory.GenerateEditionsXmlFrom(editionsRootPage, editionEntries);
+            string resultXml = EditionsXmlFactory.GenerateXmlFrom(editionsRootPage, editionEntries);
             //TODO: validate the feedxml at http://opds-validator.appspot.com/ (do it only manually perhaps?)
 
 
@@ -57,8 +56,8 @@ namespace EPiPugPigConnector.Tests.Editions.EditionsXml
         public void Test_Create_Xml_Template_Model_From_Pages()
         {
             //Arrange 
-            IEditionsXmlFeedRoot editionsPage = new FakeEditionsPage();
-            IEditionsXmlFeedEntry editionPage = new FakeEditionPage();
+            IEditionsFeedElement editionsPage = new FakeEditionsPage();
+            IEditionsEntryElement editionPage = new FakeEditionPage();
             //Act
             //Assert
             Assert.IsFalse(

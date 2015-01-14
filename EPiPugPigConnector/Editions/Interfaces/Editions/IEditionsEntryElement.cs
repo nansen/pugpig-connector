@@ -7,7 +7,7 @@ namespace EPiPugPigConnector.Editions.Interfaces.Editions
     /// One Editions.xml can contain many entry elements.
     /// </summary>
 
-    public interface IEditionsXmlFeedEntry
+    public interface IEditionsEntryElement
     {
         /// <summary>
         /// "The Arty Newspapers Issue#4 - 2014."

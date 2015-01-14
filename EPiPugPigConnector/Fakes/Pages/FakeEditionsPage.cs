@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
-using EPiPugPigConnector.Models.Pages;
+using EPiPugPigConnector.Editions.Models.Pages;
+using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 
 namespace EPiPugPigConnector.Fakes.Pages
 {
-    public class FakeEditionsPage : IEditionsXmlFeedRoot
+    public class FakeEditionsPage : IEditionsFeedElement
     {
         public FakeEditionsPage()
         {
@@ -24,7 +26,7 @@ namespace EPiPugPigConnector.Fakes.Pages
         public string FeedUpdated { get; set; }
         public string GetFeedUpdatedFormatted(DateTime dateTimeUpdated)
         {
-            return EditionsPageHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
+            return XmlHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
         }
     }
 }

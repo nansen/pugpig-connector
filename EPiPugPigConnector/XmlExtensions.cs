@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace EPiPugPigConnector.Editions.EditionsXml
+namespace EPiPugPigConnector
 {
     public static class XmlExtensions
     {
