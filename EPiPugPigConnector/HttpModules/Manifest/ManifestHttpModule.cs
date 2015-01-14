@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
-namespace EPiPugPigConnector.HttpModules.ManifestHandler
+namespace EPiPugPigConnector.HttpModules.Manifest
 {
     class ManifestHttpModule : IHttpModule
     {
@@ -20,7 +16,11 @@ namespace EPiPugPigConnector.HttpModules.ManifestHandler
 
             if (httpApplication.Request.RawUrl.ToLower().EndsWith(".manifest"))
             {
-                //do stuff
+                //todo: genereate manifest for current episerver page.
+                // the url without the .manifest ending should point to the episerver page.
+                // the url with the .html ending should point to a RelativeUrl processed 
+                // (custom logic for manifest urls) episerver page.
+
                 var test = 1;
             }
         }

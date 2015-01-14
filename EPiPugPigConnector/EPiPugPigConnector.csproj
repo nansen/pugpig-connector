@@ -195,8 +195,7 @@
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
     <Compile Include="Editions\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
-    <Compile Include="HttpModules\ManifestHandler\ManifestHttpModule.cs" />
-    <Compile Include="HttpModules\ManifestHandler\ManifestHttpHandler.cs" />
+    <Compile Include="HttpModules\Manifest\ManifestHttpModule.cs" />
     <Compile Include="PreApplicationStart.cs" />
     <Compile Include="PugPigPageEventsHandler.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsFeedElement.cs" />
@@ -218,7 +217,6 @@
     <Compile Include="HttpModules\RelativeUrl\CustomHtmlStream.cs" />
     <Compile Include="HttpModules\RelativeUrl\HtmlProcessor.cs" />
     <Compile Include="HttpModules\RelativeUrl\RelativeUrlHttpModule.cs" />
-    <Compile Include="HttpModules\ToRelativeUrlActionFilterAttribute.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Manifest\DummyWorkerRequest.cs" />
     <Compile Include="Manifest\ManifestFactory.cs" />
