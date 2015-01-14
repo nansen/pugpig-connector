@@ -16,24 +16,31 @@ namespace EPiPugPigConnector.Controllers
             _manifestFactory = manifestFactory;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string urlSegment)
         {
-            var manifestFactory = new ManifestFactory(_contentRepository);
-            var model = manifestFactory.LoadModel();
-            if (model == null)
+            if (urlSegment.ToLower().EndsWith(".segment"))
             {
-                model = new ManifestModel();
+                var manifestFactory = new ManifestFactory(_contentRepository);
+                var model = manifestFactory.LoadModel();
+                if (model == null)
+                {
+                    model = new ManifestModel();
+                }
+
+                model.StartPoint = SiteDefinition.Current.RootPage;
+                model.IncludeStartPage = true; //TODO: IncludeStartPage.Checked;
+
+                manifestFactory.Save(model);
+
+                manifestFactory.FindPagesAndAddThem();
+                manifestFactory.WriteManifestFile();
+
+                return Content("File Generated!");
             }
-
-            model.StartPoint = SiteDefinition.Current.RootPage;
-            model.IncludeStartPage = true; //TODO: IncludeStartPage.Checked;
-
-            manifestFactory.Save(model);
-
-            manifestFactory.FindPagesAndAddThem();
-            manifestFactory.WriteManifestFile();
-
-            return Content("File Generated!");
+            else
+            {
+                return new HttpNotFoundResult();
+            }
         }
     }
 }

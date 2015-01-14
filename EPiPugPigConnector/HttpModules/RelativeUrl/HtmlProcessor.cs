@@ -1,8 +1,8 @@
-﻿using CsQuery;
-using System;
+﻿using System;
 using System.Linq;
+using CsQuery;
 
-namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
+namespace EPiPugPigConnector.HttpModules.RelativeUrl
 {
     public class UrlToRelativeUrlHtmlProcessor
     {

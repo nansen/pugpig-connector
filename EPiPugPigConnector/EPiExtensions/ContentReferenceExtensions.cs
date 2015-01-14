@@ -42,6 +42,25 @@ namespace EPiPugPigConnector.EPiExtensions
         }
 
         /// <summary>
+        /// Loads ancestors of the specificed type <typeparamref name="TContentType"/> for the provided <see cref="contentLink"/>
+        /// </summary>
+        /// <typeparam name="TContentType">Type of ancestors to load</typeparam>
+        /// <param name="contentLink">The starting page to load from</param>
+        /// <returns>A collection of <see cref="TContentType"/> items, ordered by closest ancestor first (ie. parent of the <paramref name="contentLink"/>, assuming it is of type <typeparamref name="TContentType"/>).</returns>
+        public static IEnumerable<TContentType> GetAncestors<TContentType>(this ContentReference contentLink)
+            where TContentType : IContent
+        {
+            var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
+
+            if (ContentReference.IsNullOrEmpty(contentLink))
+            {
+                return Enumerable.Empty<TContentType>();
+            }
+
+            return contentLoader.GetAncestors(contentLink).OfType<TContentType>();
+        }
+
+        /// <summary>
         ///     Returns page of PageData type for provided content reference.
         /// </summary>
         /// <param name="contentReference">Content reference for which to get page.</param>

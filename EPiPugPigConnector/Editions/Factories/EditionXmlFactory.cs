@@ -116,9 +116,9 @@ namespace EPiPugPigConnector.Editions.Factories
             return data;
         }
 
-        private static string GetFriendlyUrlWithExtension(PageData page, string extension)
+        private static string GetFriendlyUrlWithExtension(PageData page, string extension, bool includeHost = true)
         {
-            string friendlyUrl = page.GetFriendlyUrl(includeHost: false);
+            string friendlyUrl = page.GetFriendlyUrl(includeHost);
             friendlyUrl = friendlyUrl.TrimEnd(new[] {'/'});
 
             return string.Format("{0}{1}", friendlyUrl, extension);

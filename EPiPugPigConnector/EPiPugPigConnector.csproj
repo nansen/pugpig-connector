@@ -177,6 +177,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\DemoApp\packages\WebActivatorEx.2.0.6\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
@@ -186,12 +189,16 @@
     <Compile Include="Editions\Factories\EditionXmlFactory.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
+    <Compile Include="Editions\PageHelper.cs" />
     <Compile Include="Editions\UrlHelper.cs" />
     <Compile Include="Editions\XmlDateTimeIso8601.cs" />
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
     <Compile Include="Editions\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
-    <Compile Include="XmlExtensions.cs" />
+    <Compile Include="HttpModules\ManifestHandler\ManifestHttpModule.cs" />
+    <Compile Include="HttpModules\ManifestHandler\ManifestHttpHandler.cs" />
+    <Compile Include="PreApplicationStart.cs" />
+    <Compile Include="PugPigPageEventsHandler.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsFeedElement.cs" />
     <Compile Include="Editions\PageTreeEditionsGenerator.cs" />
     <Compile Include="Editions\Factories\EditionsXmlFactory.cs" />
@@ -208,9 +215,9 @@
     <Compile Include="Fakes\Pages\FakeEditionPage.cs" />
     <Compile Include="Fakes\Pages\FakeEditionsPage.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="HttpModules\RelativeUrlModule\CustomHtmlStream.cs" />
-    <Compile Include="HttpModules\RelativeUrlModule\HtmlProcessor.cs" />
-    <Compile Include="HttpModules\RelativeUrlModule\Module.cs" />
+    <Compile Include="HttpModules\RelativeUrl\CustomHtmlStream.cs" />
+    <Compile Include="HttpModules\RelativeUrl\HtmlProcessor.cs" />
+    <Compile Include="HttpModules\RelativeUrl\RelativeUrlHttpModule.cs" />
     <Compile Include="HttpModules\ToRelativeUrlActionFilterAttribute.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="Manifest\DummyWorkerRequest.cs" />
@@ -222,28 +229,16 @@
     <Compile Include="Editions\Models\Pages\Helpers\EditionsHelper.cs" />
     <Compile Include="Mvc\StructureMapDependencyResolver.cs" />
     <Compile Include="Fakes\FakePageTreeEditionsGenerator.cs" />
-    <Compile Include="IEditionsGenerator.cs" />
+    <Compile Include="Controllers\IEditionsGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="RouteConfig.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\editionsTemplateXsd.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -253,9 +248,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Docs\Opds feed docs.txt" />
-    <EmbeddedResource Include="Resources\editionsEntryTemplateXml.xml" />
-    <EmbeddedResource Include="Resources\editionsTemplateXml.xml" />
-    <EmbeddedResource Include="Resources\editionsRootTemplateXml.xml" />
     <Content Include="Docs\Overview project urls.txt" />
     <Content Include="EPiExtensions\source.txt" />
     <Content Include="Docs\Modifications to apply to the Web project.txt" />

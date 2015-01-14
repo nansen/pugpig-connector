@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Web;
-using StructureMap.Construction;
 
-namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
+namespace EPiPugPigConnector.HttpModules.RelativeUrl
 {
-    public class Module : IHttpModule
+    public class RelativeUrlHttpModule : IHttpModule
     {
         public void Init(HttpApplication context)
         {
@@ -18,12 +17,10 @@ namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
             {
                 var httpApplication = (HttpApplication) sender;
 
-                if (httpApplication.Response.ContentType.Equals("text/html"))
+                if (httpApplication.Request.RawUrl.ToLower().EndsWith(".html") && httpApplication.Response.ContentType.Equals("text/html"))
                 {
                     //Process current html page with CustomHtmlStream:
-                    httpApplication.Response.Filter = new CustomHtmlStream(
-                        httpApplication.Response.Filter,
-                        httpApplication.Request.Url);
+                    httpApplication.Response.Filter = new CustomHtmlStream(httpApplication.Response.Filter, httpApplication.Request.Url);
                 }
             }
         }

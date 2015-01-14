@@ -1,7 +1,6 @@
 ﻿using System;
-using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 
-namespace EPiPugPigConnector.Editions.Interfaces.Edition
+namespace EPiPugPigConnector.Editions
 {
     public class XmlDateTimeIso8601
     {

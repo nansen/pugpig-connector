@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using EPiPugPigConnector.Mvc;
+using EPiServer;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
@@ -11,14 +12,34 @@ namespace EPiPugPigConnector
     [ModuleDependency(typeof(ServiceContainerInitialization))]
     public class Initializer : IConfigurableModule 
     {
+        private bool _eventsAttached = false;
+        private readonly PugPigPageEventsHandler _pugPigEventsHandler = new PugPigPageEventsHandler();
+
         public void Initialize(InitializationEngine context)
         {
             // Attach event handlers here
+
+            // from: http://tedgustaf.com/blog/2010/5/attach-episerver-event-handlers-on-startup-using-initializablemodule/
+            // Attach event handlers unless they've already been attached
+            // The initialize method may be executed repeatedly if an exception
+            // is thrown, but we don't want additional event handlers to attach
+            // if the exception is thrown later in the call stack
+            if (!_eventsAttached)
+            {
+                // Attach event handler to when a page has been changed
+                DataFactory.Instance.DeletedPage += _pugPigEventsHandler.Instance_DeletedPage;
+                DataFactory.Instance.PublishedPage += _pugPigEventsHandler.Instance_PublishedPage;
+                DataFactory.Instance.MovedPage += _pugPigEventsHandler.Instance_MovedPage;
+                _eventsAttached = true;
+            }
         }
 
         public void Uninitialize(InitializationEngine context)
         {
-            // Detach any event handlers here
+            // Detach event handlers
+            DataFactory.Instance.DeletedPage -= _pugPigEventsHandler.Instance_DeletedPage;
+            DataFactory.Instance.PublishedPage -= _pugPigEventsHandler.Instance_PublishedPage;
+            DataFactory.Instance.MovedPage -= _pugPigEventsHandler.Instance_MovedPage;
         }
 
         public void Preload(string[] parameters)

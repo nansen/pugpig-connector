@@ -1,6 +1,8 @@
-﻿using EPiPugPigConnector.Editions;
+﻿using EPiPugPigConnector.Controllers;
+using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Fakes;
 using EPiPugPigConnector.Manifest;
+using EPiServer;
 using StructureMap.Configuration.DSL;
 
 namespace EPiPugPigConnector

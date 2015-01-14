@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using EPiPugPigConnector.HttpModules.RelativeUrlModule;
 
 namespace EPiPugPigConnector.HttpModules
 {

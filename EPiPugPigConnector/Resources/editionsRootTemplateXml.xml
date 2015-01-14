@@ -1,9 +1,0 @@
-﻿<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:opds="http://opds-spec.org/2010/catalog">
-  <id></id>
-  <link rel="self" type="application/atom+xml;profile=opds-catalog;kind=acquisition" href=""/>
-  <title></title>
-  <updated></updated>
-  <author>
-    <name></name>
-  </author>
-</feed>

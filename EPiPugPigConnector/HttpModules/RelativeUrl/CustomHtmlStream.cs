@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace EPiPugPigConnector.HttpModules.RelativeUrlModule
+namespace EPiPugPigConnector.HttpModules.RelativeUrl
 {
     //From: http://patrickdesjardins.com/blog/modify-the-html-output-of-any-of-your-page-before-rendering
     public class CustomHtmlStream : Stream
