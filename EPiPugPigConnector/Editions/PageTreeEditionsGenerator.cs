@@ -26,7 +26,7 @@ namespace EPiPugPigConnector.Editions
 
         public string ContentType
         {
-            get { return "text/xml"; }
+            get { return "application/atom+xml"; }
         }
 
         public string GetEditions(string language = null)

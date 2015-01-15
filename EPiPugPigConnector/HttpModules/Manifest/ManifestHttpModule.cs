@@ -7,10 +7,10 @@ namespace EPiPugPigConnector.HttpModules.Manifest
     {
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += context_BeginRequest;
+            context.EndRequest += context_EndRequest;
         }
 
-        void context_BeginRequest(object sender, EventArgs e)
+        void context_EndRequest(object sender, EventArgs e)
         {
             var httpApplication = (HttpApplication)sender;
 
@@ -21,7 +21,12 @@ namespace EPiPugPigConnector.HttpModules.Manifest
                 // the url with the .html ending should point to a RelativeUrl processed 
                 // (custom logic for manifest urls) episerver page.
 
-                var test = 1;
+                var manifestCreator = new ManifestCreator();
+                
+                var context = httpApplication.Context;
+                context.Response.StatusCode = 200;
+                context.Response.AddHeader("Content-Type", "text/html");
+                context.Response.Write(manifestCreator.MakeManifestFileAsString());
             }
         }
 

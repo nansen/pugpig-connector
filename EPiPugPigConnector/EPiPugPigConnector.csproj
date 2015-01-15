@@ -195,6 +195,7 @@
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
     <Compile Include="Editions\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
+    <Compile Include="HttpModules\Manifest\ManifestCreator.cs" />
     <Compile Include="HttpModules\Manifest\ManifestHttpModule.cs" />
     <Compile Include="PreApplicationStart.cs" />
     <Compile Include="PugPigPageEventsHandler.cs" />
