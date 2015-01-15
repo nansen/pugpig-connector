@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
+using EPiPugPigConnector.Utils;
 using EPiServer.Core;
 using Microsoft.SqlServer.Server;
 
@@ -25,8 +26,7 @@ namespace EPiPugPigConnector.Editions.Factories
 
         private static string GenerateRootAndFeedXml(IEditionFeedElement editionFeedData)
         {
-            //create xml.
-            //http://stackoverflow.com/questions/14840723/how-to-specify-an-xmlns-for-xdocument
+            StopwatchTimer stopwatch = new StopwatchTimer();
 
             var rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             var feedElement = CreateFeedXmlFrom(editionFeedData);
@@ -34,7 +34,8 @@ namespace EPiPugPigConnector.Editions.Factories
             
             feedElement.Add(entryElements); 
             rootDocument.Add(feedElement); //adds the main feed with entries.
-            
+            XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
+
             return XmlHelper.ForceXmlToUtf8Output(rootDocument);
         }
 

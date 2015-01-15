@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
+using EPiPugPigConnector.Utils;
 
 namespace EPiPugPigConnector.Editions.Factories
 {
@@ -19,9 +20,13 @@ namespace EPiPugPigConnector.Editions.Factories
         public static string GenerateXmlFrom(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData)
         {
             //create the xml
+            StopwatchTimer stopwatch = new StopwatchTimer();
+
             XDocument rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             AddFeedXml(editionsFeedData, rootDocument);
             AddEntriesXml(editionEntriesData, rootDocument);
+
+            XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
 
             string resultXml = XmlHelper.ForceXmlToUtf8Output(rootDocument);
             return resultXml;

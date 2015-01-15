@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using EPiPugPigConnector.Utils;
 
 namespace EPiPugPigConnector.Editions
 {
@@ -84,6 +85,15 @@ namespace EPiPugPigConnector.Editions
         public static XNamespace GetAtomXmlNameSpace()
         {
             return XNamespace.Get(Constants.ATOM_XML_NAMESPACE);
+        }
+
+        public static void AddElapsedTimeComment(StopwatchTimer stopwatch, XDocument rootDocument)
+        {
+            string elapsedTime = stopwatch.Stop();
+            var generatedAtComment = new XComment(String.Format("XML GENERATED AT: {0}", DateTime.Now.ToString("o")));
+            var elapsedTimeComment = new XComment(String.Format("XML GENERATED IN: {0}", elapsedTime));
+            rootDocument.AddFirst(elapsedTimeComment);
+            rootDocument.AddFirst(generatedAtComment);
         }
     }
 }
