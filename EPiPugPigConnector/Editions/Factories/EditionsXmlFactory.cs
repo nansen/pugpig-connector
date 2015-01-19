@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
+using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.Utils;
 
 namespace EPiPugPigConnector.Editions.Factories
@@ -17,16 +18,19 @@ namespace EPiPugPigConnector.Editions.Factories
         /// Step 1 of 4 to create a working connector:
         /// https://pugpig.zendesk.com/hc/en-us/articles/201079186-How-To-Write-A-Connector
         /// </summary>
-        public static string GenerateXmlFrom(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData)
+        public static string GenerateXmlFrom(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData, bool includeGeneratedTimeComment = true)
         {
             //create the xml
-            StopwatchTimer stopwatch = new StopwatchTimer();
+            var stopwatch = new StopwatchTimer();
 
             XDocument rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             AddFeedXml(editionsFeedData, rootDocument);
             AddEntriesXml(editionEntriesData, rootDocument);
 
-            XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
+            if (includeGeneratedTimeComment)
+            {
+                XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
+            }
 
             string resultXml = XmlHelper.ForceXmlToUtf8Output(rootDocument);
             return resultXml;

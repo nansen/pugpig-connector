@@ -27,9 +27,10 @@ namespace EPiPugPigConnector
             if (!_eventsAttached)
             {
                 // Attach event handler to when a page has been changed
-                DataFactory.Instance.DeletedPage += _pugPigEventsHandler.Instance_DeletedPage;
+                DataFactory.Instance.PublishingPage += _pugPigEventsHandler.Instance_PublishingPage;
                 DataFactory.Instance.PublishedPage += _pugPigEventsHandler.Instance_PublishedPage;
-                DataFactory.Instance.MovedPage += _pugPigEventsHandler.Instance_MovedPage;
+                DataFactory.Instance.MovingPage += _pugPigEventsHandler.Instance_MovingPage;
+                DataFactory.Instance.DeletedPage += _pugPigEventsHandler.Instance_DeletedPage;
                 _eventsAttached = true;
             }
         }
@@ -37,9 +38,10 @@ namespace EPiPugPigConnector
         public void Uninitialize(InitializationEngine context)
         {
             // Detach event handlers
-            DataFactory.Instance.DeletedPage -= _pugPigEventsHandler.Instance_DeletedPage;
+            DataFactory.Instance.PublishingPage -= _pugPigEventsHandler.Instance_PublishingPage;
             DataFactory.Instance.PublishedPage -= _pugPigEventsHandler.Instance_PublishedPage;
-            DataFactory.Instance.MovedPage -= _pugPigEventsHandler.Instance_MovedPage;
+            DataFactory.Instance.MovedPage -= _pugPigEventsHandler.Instance_MovingPage;
+            DataFactory.Instance.DeletedPage -= _pugPigEventsHandler.Instance_DeletedPage;
         }
 
         public void Preload(string[] parameters)

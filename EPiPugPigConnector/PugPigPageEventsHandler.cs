@@ -4,6 +4,7 @@ using System.Linq;
 using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
+using EPiPugPigConnector.Helpers;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAccess;
@@ -14,42 +15,102 @@ namespace EPiPugPigConnector
 {
     public class PugPigPageEventsHandler
     {
-        public PugPigPageEventsHandler()
+        public void Instance_PublishingPage(object sender, PageEventArgs e)
         {
-
-        }
-
-        public void Instance_MovedPage(object sender, PageEventArgs e)
-        {
-            UpdatePugPigFeedsChangedDate(e.Page);
+            //Occurs before PublishedPage event. "page is about the be published".
+            UpdateEditionSubPageChangeDate(e.Page);
         }
 
         public void Instance_PublishedPage(object sender, PageEventArgs e)
         {
             UpdatePugPigFeedsChangedDate(e.Page);
+
+            //TODO: Clear affected cache for xml files and manifest files here
         }
+
+        public void Instance_MovingPage(object sender, PageEventArgs e)
+        {
+            var moveArgs = e as MovePageEventArgs;
+
+            if (moveArgs != null)
+            {
+                var changedDate = DateTime.Now;
+
+                //update this page change date.
+                SetChangedDate(e.Page, changedDate);
+
+                //get original source pugpigsfeeds.
+                var sourceOriginalParent = moveArgs.OriginalParent.GetPage();
+                var sourceEditionPage = PageHelper.GetAncestorEditionPage(sourceOriginalParent);
+                var sourceEditionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(sourceEditionPage);
+                //update changedates
+                SetChangedDate(sourceEditionPage, changedDate);
+                SetChangedDate(sourceEditionsContainerPage, changedDate);
+
+                //get target pugpigsfeeds if different.
+                var targetEditionPage = PageHelper.GetAncestorEditionPage(moveArgs.TargetLink.GetPage());
+                var targetEditionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(targetEditionPage);
+
+                if (targetEditionPage != null && sourceEditionPage != null)
+                {
+                    if (!targetEditionPage.PageLink.CompareToIgnoreWorkID(sourceEditionPage.PageLink))
+                    {
+                        //update changedates
+                        SetChangedDate(targetEditionPage, changedDate);
+                        SetChangedDate(targetEditionsContainerPage, changedDate);
+                    }
+                }
+                
+                if (moveArgs.TargetLink.ID == PageReference.WasteBasket.ID)
+                {
+                    //page is being deleted/moved to the WasteBasket
+                }
+            }
+
+            //TODO: Clear affected cache for xml files and manifest files here
+        }
+
 
         public void Instance_DeletedPage(object sender, PageEventArgs e)
         {
-            UpdatePugPigFeedsChangedDate(e.Page);
+            //Already handled in MovingPage event, a MovingPage event is triggered before DeletedPage event.
         }
 
+        /// <summary>
+        /// Updates change date for this page Edition and Editioncontainer.
+        /// </summary>
+        /// <param name="page"></param>
         private void UpdatePugPigFeedsChangedDate(PageData page)
         {
-            //if page is a valid pugpig page
-            if (PageHelper.IsValidPugPigPage(page))
+            //If sending page is a valid subpage part of an Pugpig edition.
+            if (!PageHelper.IsEditionsContainerOrEditionPage(page) && PageHelper.IsValidPugPigPage(page))
             {
                 //get the editionpage and the editionspage
                 var editionPage = PageHelper.GetAncestorEditionPage(page);
                 var editionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(page);
 
                 //set their changedate to currentpage changed date.
-                //set changed date on the current page as well since this is not standard episerver behaviour. -> will update the updated value in the xml feed with changed prop.
-
-                var dateTimePageChanged = DateTime.Now;
-                SetChangedDate(page, dateTimePageChanged);
+                var dateTimePageChanged = page.Changed;
                 SetChangedDate(editionPage, dateTimePageChanged);
                 SetChangedDate(editionsContainerPage, dateTimePageChanged);
+            }
+
+            //Special case: if Edition page, update parent EditionsContainerPage
+            if (page is EditionPage)
+            {
+                //Set changed date on parent EditionsContainerPage
+                var editionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(page);
+                SetChangedDate(editionsContainerPage, page.Changed);
+            }
+        }
+
+        private void UpdateEditionSubPageChangeDate(PageData page)
+        {
+            if (!PageHelper.IsEditionsContainerOrEditionPage(page))
+            {
+                //Set changed date on the current page since this is not standard EPiServer behaviour. -> used in <updated> in the xml feed
+                page.SetChangedOnPublish = true; //http://dodavinkeln.se/post/how-to-set-a-page-updated-programmatically
+                page.Changed = DateTime.Now;
             }
         }
 
@@ -57,32 +118,13 @@ namespace EPiPugPigConnector
         {
             if (page != null)
             {
-                DisableSetChangedForEditionPageTypes(page);
-
                 var clone = page.CreateWritableClone();
-                clone.Property["PageChanged"].Value = changed; 
-                DataFactory.Instance.Save(clone, SaveAction.Publish, AccessLevel.NoAccess);
+                clone.SetChangedOnPublish = true; 
+                clone.Changed = changed;
+                DataFactory.Instance.Save(clone, SaveAction.ForceCurrentVersion); //avoids triggering the published event again.
 
-                EnableSetChangedForEditionPageTypes(page);
-            }
-        }
-
-        /// <summary>
-        /// To avoid auto update of change value on the publish event.
-        /// </summary>
-        private static void DisableSetChangedForEditionPageTypes(PageData page)
-        {
-            if (page is EditionPage || page is EditionsContainerPage)
-            {
-                page.SetChangedOnPublish = false;
-            }
-        }
-
-        private static void EnableSetChangedForEditionPageTypes(PageData page)
-        {
-            if (page is EditionPage || page is EditionsContainerPage)
-            {
-                page.SetChangedOnPublish = true;
+                //remove page from episerver cache
+                DataFactoryCache.RemovePage(page.ContentLink);
             }
         }
     }

@@ -40,7 +40,7 @@ namespace EPiPugPigConnector.Tests.Editions.EditionsXml
             };
 
             //Act
-            string resultXml = EditionsXmlFactory.GenerateXmlFrom(editionsRootPage, editionEntries);
+            string resultXml = EditionsXmlFactory.GenerateXmlFrom(editionsRootPage, editionEntries, includeGeneratedTimeComment: false);
             //TODO: validate the feedxml at http://opds-validator.appspot.com/ (do it only manually perhaps?)
 
 

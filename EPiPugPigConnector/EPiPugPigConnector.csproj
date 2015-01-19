@@ -189,11 +189,10 @@
     <Compile Include="Editions\Factories\EditionXmlFactory.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
-    <Compile Include="Editions\PageHelper.cs" />
-    <Compile Include="Editions\UrlHelper.cs" />
-    <Compile Include="Editions\XmlDateTimeIso8601.cs" />
+    <Compile Include="Helpers\PageHelper.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
-    <Compile Include="Editions\XmlHelper.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
     <Compile Include="HttpModules\Manifest\ManifestCreator.cs" />
     <Compile Include="HttpModules\Manifest\ManifestHttpModule.cs" />

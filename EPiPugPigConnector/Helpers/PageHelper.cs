@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
 using EPiServer.Core;
-using EPiServer.Filters;
 
-namespace EPiPugPigConnector.Editions
+namespace EPiPugPigConnector.Helpers
 {
     public static class PageHelper
     {
@@ -19,7 +15,7 @@ namespace EPiPugPigConnector.Editions
         {
             bool isValid = false;
             
-            var pageFakeList = new List<PageData>{ page };
+            var pageFakeList = new List<PageData> { page };
             //FilterForDisplay also makes sure the current user has read access as well.
             pageFakeList.FilterForDisplay(requirePageTemplate, requireVisibleInMenu);
             var validPage = pageFakeList.ToList().FirstOrDefault();
@@ -63,11 +59,19 @@ namespace EPiPugPigConnector.Editions
 
         public static EditionPage GetAncestorEditionPage(PageData page)
         {
-            //if page is descendant of an edition page.
-            IEnumerable<EditionPage> editionPageAncestors = page.ContentLink.GetAncestors<EditionPage>().ToList();
-            if (editionPageAncestors.Any())
+            if (page is EditionPage)
             {
-                return editionPageAncestors.FirstOrDefault();
+                return page as EditionPage;
+            }
+
+            //if page is descendant of an edition page.
+            if (page != null && page.ContentLink != null)
+            {
+                IEnumerable<EditionPage> editionPageAncestors = page.ContentLink.GetAncestors<EditionPage>().ToList();
+                if (editionPageAncestors.Any())
+                {
+                    return editionPageAncestors.FirstOrDefault();
+                }
             }
             return null;
         }
@@ -80,12 +84,20 @@ namespace EPiPugPigConnector.Editions
             }
 
             //if page is descendant of an editions page.
-            IEnumerable<EditionsContainerPage> editionsPageAncestors = page.ContentLink.GetAncestors<EditionsContainerPage>().ToList();
-            if (editionsPageAncestors.Any())
+            if (page != null && page.ContentLink != null)
             {
-                return editionsPageAncestors.FirstOrDefault();
+                IEnumerable<EditionsContainerPage> editionsPageAncestors = page.ContentLink.GetAncestors<EditionsContainerPage>().ToList();
+                if (editionsPageAncestors.Any())
+                {
+                    return editionsPageAncestors.FirstOrDefault();
+                }
             }
             return null;
+        }
+
+        public static bool IsEditionsContainerOrEditionPage(PageData page)
+        {
+            return (page is EditionPage || page is EditionsContainerPage);
         }
     }
 }

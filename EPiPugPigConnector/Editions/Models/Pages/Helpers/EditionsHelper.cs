@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EPiPugPigConnector.EPiExtensions;
+using EPiPugPigConnector.Helpers;
 using EPiServer.Core;
 
 namespace EPiPugPigConnector.Editions.Models.Pages.Helpers

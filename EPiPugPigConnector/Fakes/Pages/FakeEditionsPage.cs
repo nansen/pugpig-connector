@@ -7,6 +7,7 @@ using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.Editions.Models.Pages.Helpers;
+using EPiPugPigConnector.Helpers;
 
 namespace EPiPugPigConnector.Fakes.Pages
 {

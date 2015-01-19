@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
+using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.Utils;
 using EPiServer.Core;
 using Microsoft.SqlServer.Server;
