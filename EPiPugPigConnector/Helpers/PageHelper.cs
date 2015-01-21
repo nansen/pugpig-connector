@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
+using EPiServer;
 using EPiServer.Core;
+using EPiServer.Web.Routing;
 
 namespace EPiPugPigConnector.Helpers
 {
@@ -98,6 +101,29 @@ namespace EPiPugPigConnector.Helpers
         public static bool IsEditionsContainerOrEditionPage(PageData page)
         {
             return (page is EditionPage || page is EditionsContainerPage);
+        }
+
+        public static string GetFriendlyUrlWithExtension(PageData page, string extension, bool includeHost = true)
+        {
+            string friendlyUrl = page.GetFriendlyUrl(includeHost);
+            friendlyUrl = friendlyUrl.TrimEnd(new[] {'/'});
+
+            return String.Format("{0}{1}", friendlyUrl, extension);
+        }
+
+        public static PageReference GetPageReferenceFromExternalUrl(Uri uri)
+        {
+            //var x = new UrlBuilder(uri);
+            //var contentReference = UrlResolver.Current.Route(new UrlBuilder(x.Path));
+
+            //url must be a relative url. e.g. starts with "/"
+            var contentReference = UrlResolver.Current.Route(new UrlBuilder(uri.PathAndQuery));
+            return contentReference.ContentLink.ToPageReference();
+        }
+
+        public static PageReference GetPageReferenceFromExternalUrl(string sourceUrl)
+        {
+            return GetPageReferenceFromExternalUrl(new Uri(sourceUrl));
         }
     }
 }

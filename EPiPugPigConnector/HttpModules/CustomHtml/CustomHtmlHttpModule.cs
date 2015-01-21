@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Web;
 
-namespace EPiPugPigConnector.HttpModules.Manifest
+namespace EPiPugPigConnector.HttpModules.CustomHtml
 {
-    class ManifestHttpModule : IHttpModule
+    public class CustomHtmlHttpModule : IHttpModule
     {
         public void Init(HttpApplication context)
         {
-            context.EndRequest += context_EndRequest;
+            context.PreRequestHandlerExecute += context_PreRequestHandlerExecute;
             context.PostRequestHandlerExecute += context_PostRequestHandlerExecute;
         }
 
@@ -15,22 +15,17 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         {
             var httpApplication = (HttpApplication)sender;
 
-            if (httpApplication.Request.RawUrl.ToLower().EndsWith(Constants.MANIFEST_FILE_EXTENSION))
+            if (httpApplication.Request.RawUrl.ToLower().EndsWith(".html") && 
+                httpApplication.Response.ContentType.Equals("text/html"))
             {
                 //Process current html page with CustomHtmlStream:
                 httpApplication.Response.Filter = new CustomHtmlStream(httpApplication.Response.Filter, httpApplication.Request.Url);
-                
-                var context = httpApplication.Context;
-                context.Response.StatusCode = 200;
-                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                context.Response.AddHeader("Content-Type", "text/cache-manifest");
             }
         }
 
-        void context_EndRequest(object sender, EventArgs e)
+        private void context_PreRequestHandlerExecute(object sender, EventArgs e)
         {
 
-            
         }
 
         public void Dispose()

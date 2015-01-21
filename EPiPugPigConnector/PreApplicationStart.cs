@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EPiPugPigConnector;
+using EPiPugPigConnector.HttpModules.CustomHtml;
 using EPiPugPigConnector.HttpModules.Manifest;
-using EPiPugPigConnector.HttpModules.RelativeUrl;
+using EPiPugPigConnector.HttpModules.MissingResources;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using WebActivatorEx;
 
@@ -20,8 +21,9 @@ namespace EPiPugPigConnector
     {
         public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof(RelativeUrlHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(CustomHtmlHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(ManifestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(MissingResourcesHttpModule));
         }
     }
 }

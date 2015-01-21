@@ -1,14 +1,16 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace EPiPugPigConnector.HttpModules.RelativeUrl
+namespace EPiPugPigConnector.HttpModules.Manifest
 {
     //From: http://patrickdesjardins.com/blog/modify-the-html-output-of-any-of-your-page-before-rendering
     public class CustomHtmlStream : Stream
     {
         private readonly Stream filter;
-        private readonly MemoryStream cacheStream = new MemoryStream();
         private System.Uri currentRequestUri;
+        private readonly MemoryStream cacheStream = new MemoryStream();
+
+        public bool HasError { get; set; }
 
         public CustomHtmlStream(Stream filter, System.Uri currentRequestUri)
         {
@@ -27,10 +29,8 @@ namespace EPiPugPigConnector.HttpModules.RelativeUrl
             {
                 string htmlDocument = Encoding.UTF8.GetString(cacheStream.ToArray(), 0, (int)cacheStream.Length);
 
-                //todo: modify html output here.
-                htmlDocument = htmlDocument.Replace("</body>", "<h1>PIGPUG CONNECTOR WAS HERE!</h1></body>");
-
-                UrlToRelativeUrlHtmlProcessor htmlProcessor = new UrlToRelativeUrlHtmlProcessor(currentRequestUri);
+                //modify html output here.
+                var htmlProcessor = new RelativeUrlHtmlProcessor(currentRequestUri);
                 htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
                 
                 var buffer = Encoding.UTF8.GetBytes(htmlDocument);

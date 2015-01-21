@@ -1,7 +1,7 @@
 ﻿using EPiPugPigConnector.Controllers;
 using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Fakes;
-using EPiPugPigConnector.Manifest;
+using EPiPugPigConnector.ManifestOldImplementation;
 using EPiServer;
 using StructureMap.Configuration.DSL;
 

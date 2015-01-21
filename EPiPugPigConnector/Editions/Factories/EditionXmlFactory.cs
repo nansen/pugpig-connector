@@ -108,22 +108,14 @@ namespace EPiPugPigConnector.Editions.Factories
             var data = new EditionEntryXmlElement
             {
                 EntryId = "PageEntryId-" + page.ContentLink.ID,
-                EntryHtmlLink = GetFriendlyUrlWithExtension(page, ".html"),
-                EntryManifestLink = GetFriendlyUrlWithExtension(page, ".manifest"),
+                EntryHtmlLink = PageHelper.GetFriendlyUrlWithExtension(page, ".html"),
+                EntryManifestLink = PageHelper.GetFriendlyUrlWithExtension(page, ".manifest"),
                 EntryTitle = entryTitleValue,
                 EntrySummary = entrySummarTextValue,
                 EntryUpdated = XmlHelper.GetDateTimeXmlFormatted(page.Changed)
             };
 
             return data;
-        }
-
-        private static string GetFriendlyUrlWithExtension(PageData page, string extension, bool includeHost = true)
-        {
-            string friendlyUrl = page.GetFriendlyUrl(includeHost);
-            friendlyUrl = friendlyUrl.TrimEnd(new[] {'/'});
-
-            return string.Format("{0}{1}", friendlyUrl, extension);
         }
 
         private static IEnumerable<PageData> GetAvailableDescendantPages(string feedId)

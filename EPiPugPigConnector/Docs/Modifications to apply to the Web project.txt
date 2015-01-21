@@ -6,6 +6,29 @@ The goal is to be able to add this project with some form of installer / powersh
 so that we can install this as a “plugin” to new EPiServer websites.
 ==========================================
 
+- "Url rewrite module" must be installed in IIS server. The following rules for redirecting .html and .manifest urls to dynamically
+generated html and manifest files respectively:
+<system.webServer>
+	..................................
+    <rewrite>
+      <rules>
+        <rule name="HtmlRewrite">
+          <match url="(.*)(\.html)$" />
+          <conditions logicalGrouping="MatchAny">
+            <add pattern="((.*)(\.xml)$)" ignoreCase="true" negate="true" matchType="Pattern" input="{URL}" />
+            <add pattern="((.*)(\.manifest)$)" ignoreCase="true" negate="true" matchType="Pattern" input="{URL}" />
+          </conditions>
+          <action type="Rewrite" url="{R:1}" />
+        </rule>
+
+        <rule name="ManifestRewrite">
+          <match url="(.*)(\.manifest)$" />
+          <action type="Rewrite" url="{R:1}" />
+        </rule>
+      </rules>
+    </rewrite>
+</system.webServer>
+
 * Create a Editions Page template directly under the CMS root page, and add values to props.
 - you should only have one Editions Page per website. (it is used to render the editions.xml feed)
 

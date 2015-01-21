@@ -143,6 +143,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DemoApp\packages\Microsoft.AspNet.WebApi.Client.5.1.1\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -183,6 +184,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Caching\DefaultCacheProvider.cs" />
+    <Compile Include="Caching\ICacheProvider.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\EditionsController.cs" />
     <Compile Include="Controllers\ManifestController.cs" />
@@ -194,8 +197,12 @@
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
+    <Compile Include="HttpModules\Manifest\CustomHtmlStream.cs" />
+    <Compile Include="HttpModules\Manifest\RelativeUrlHtmlProcessor.cs" />
     <Compile Include="HttpModules\Manifest\ManifestCreator.cs" />
     <Compile Include="HttpModules\Manifest\ManifestHttpModule.cs" />
+    <Compile Include="HttpModules\MissingResources\MissingResourcesHttpModule.cs" />
+    <Compile Include="Logging\LogHelper.cs" />
     <Compile Include="PreApplicationStart.cs" />
     <Compile Include="PugPigPageEventsHandler.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsFeedElement.cs" />
@@ -214,13 +221,12 @@
     <Compile Include="Fakes\Pages\FakeEditionPage.cs" />
     <Compile Include="Fakes\Pages\FakeEditionsPage.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="HttpModules\RelativeUrl\CustomHtmlStream.cs" />
-    <Compile Include="HttpModules\RelativeUrl\HtmlProcessor.cs" />
-    <Compile Include="HttpModules\RelativeUrl\RelativeUrlHttpModule.cs" />
+    <Compile Include="HttpModules\CustomHtml\CustomHtmlStream.cs" />
+    <Compile Include="HttpModules\CustomHtml\CustomHtmlHttpModule.cs" />
     <Compile Include="Initializer.cs" />
-    <Compile Include="Manifest\DummyWorkerRequest.cs" />
-    <Compile Include="Manifest\ManifestFactory.cs" />
-    <Compile Include="Manifest\ManifestModel.cs" />
+    <Compile Include="ManifestOldImplementation\DummyWorkerRequest.cs" />
+    <Compile Include="ManifestOldImplementation\ManifestFactory.cs" />
+    <Compile Include="ManifestOldImplementation\ManifestModel.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsEntryElement.cs" />
     <Compile Include="Editions\Models\Pages\EditionPage.cs" />
     <Compile Include="Editions\Models\Pages\EditionsContainerPage.cs" />

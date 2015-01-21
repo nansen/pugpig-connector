@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 
-namespace EPiPugPigConnector.Manifest
+namespace EPiPugPigConnector.ManifestOldImplementation
 {
     public class DummyWorkerRequest : HttpWorkerRequest
     {

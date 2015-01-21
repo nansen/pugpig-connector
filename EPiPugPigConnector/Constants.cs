@@ -11,5 +11,6 @@ namespace EPiPugPigConnector
         public const string OPDS_FEED_EDITIONS_XML_FILENAME = "editions.xml";
         public const string ATOM_XML_NAMESPACE = "http://www.w3.org/2005/Atom";
         public const string XML_EDITION_ID_PREFIX = "EditionId-";
+        public const string MANIFEST_FILE_EXTENSION = ".manifest";
     }
 }

@@ -2,7 +2,7 @@
 using EPiServer.Data;
 using EPiServer.Data.Dynamic;
 
-namespace EPiPugPigConnector.Manifest
+namespace EPiPugPigConnector.ManifestOldImplementation
 {
     [EPiServerDataStore(AutomaticallyCreateStore = true, AutomaticallyRemapStore = true)]
     public class ManifestModel : IDynamicData

@@ -1,4 +1,4 @@
-﻿using EPiPugPigConnector.Manifest;
+﻿using EPiPugPigConnector.ManifestOldImplementation;
 
 namespace EPiPugPigConnector.Fakes
 {

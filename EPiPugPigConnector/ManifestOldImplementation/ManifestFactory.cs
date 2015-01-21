@@ -13,7 +13,7 @@ using EPiServer.Data.Dynamic;
 using EPiServer.HtmlParsing;
 using EPiServer.Web;
 
-namespace EPiPugPigConnector.Manifest
+namespace EPiPugPigConnector.ManifestOldImplementation
 {
     public class ManifestFactory : IManifestFactory
     {

@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using EPiPugPigConnector.Manifest;
+using EPiPugPigConnector.ManifestOldImplementation;
 using EPiServer;
 using EPiServer.Web;
 
