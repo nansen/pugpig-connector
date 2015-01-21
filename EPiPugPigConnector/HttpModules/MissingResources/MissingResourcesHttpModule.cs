@@ -9,6 +9,11 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
     /// Offline manifest download gets interupted if a referenced file is missing
     /// Therefore even though the file requested for is not not found just server 200 ok
     /// To avoid problems with manifest downloads.
+    /// 
+    /// Also if a manifest gets generated for /start.html and another manifest points to the same file
+    /// the manifests must be cached to avoid "manifest changed during update" error in the client browser.
+    /// E.g. you shouldnt create two versions of the same manifest file before a page has finished downloading the assets...
+    /// (its a cascading manifest downloading problem).
     /// </summary>
     public class MissingResourcesHttpModule : IHttpModule
     {
@@ -29,15 +34,18 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
 
         void context_Error(object sender, EventArgs e)
         {
-            string fileExtension = HttpContext.Current.Request.CurrentExecutionFilePathExtension;
-
-            if (HttpContext.Current.Response.ContentType != "text/html")
+            var context = HttpContext.Current;
+            string fileExtension = context.Request.CurrentExecutionFilePathExtension;
+            if (context.Response.ContentType != "text/html")
             {
                 if (IsManifestAssetFileExtension(fileExtension))
                 {
-                    if (HttpContext.Current.Error.Message.Contains("404"))
+                    if (context.Error.Message.Contains("404"))
                     {
-
+                        context.Response.Clear();
+                        context.Response.StatusCode = 200;
+                        context.Response.AddHeader("OfflineManifestErrorOverride_OriginalErrorMessage", string.Format("Error: {0}", context.Error.Message));
+                        context.ClearError();
                     }
                 }
             }
@@ -56,7 +64,6 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
 
         void context_EndRequest(object sender, EventArgs e)
         {
-
             //returns 200 instead of errors on files reqeusted by .html pages.
             //To prevent offline manifest creation from failing (one single asset file failing and the offline manifest
             //download proccess is stopped.
@@ -69,7 +76,7 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
                 {
                     context.Response.Clear();
                     context.Response.StatusCode = 200;
-                    context.Response.AddHeader("OfflineManifestErrorOverride_originalErrorCode", "404 not found");
+                    context.Response.AddHeader("OfflineManifestErrorOverride_OriginalStatusCode", string.Format("StatusCode: {0}", context.Response.StatusCode));
                 }
             }
         }
