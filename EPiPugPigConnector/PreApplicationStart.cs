@@ -24,6 +24,10 @@ namespace EPiPugPigConnector
             DynamicModuleUtility.RegisterModule(typeof(CustomHtmlHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(ManifestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(MissingResourcesHttpModule));
+
+            Logging.LogHelper.SetupPugpigConnectorLogging();
         }
+
+
     }
 }

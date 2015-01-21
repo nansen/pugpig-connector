@@ -22,5 +22,14 @@ namespace EPiPugPigConnector.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool pugpig_enable_logging {
+            get {
+                return ((bool)(this["pugpig_enable_logging"]));
+            }
+        }
     }
 }
