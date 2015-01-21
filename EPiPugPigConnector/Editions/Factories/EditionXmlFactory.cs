@@ -27,6 +27,8 @@ namespace EPiPugPigConnector.Editions.Factories
 
         private static string GenerateRootAndFeedXml(IEditionFeedElement editionFeedData)
         {
+            //TODO: Object cache the xml creation here. 
+
             StopwatchTimer stopwatch = new StopwatchTimer();
 
             var rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));

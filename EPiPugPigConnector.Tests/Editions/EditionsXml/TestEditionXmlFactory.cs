@@ -21,6 +21,9 @@
 //        [TestMethod]
 //        public void Test_Generate_Edition_Xml()
 //        {
+
+//TODO: test edition creation
+
 //            //Arrange 
 //            IEditionFeedElement editionsRootPage = new FakeEditionPage();
 

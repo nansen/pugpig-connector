@@ -7,6 +7,17 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 {
     public class ManifestCreator
     {
+        //TODO: Object cache the manifest creation here. 
+        //TODO: unit test manifest creation
+
+        /* TODO: Complete the manifest creation. 
+            See validator here: http://manifest-validator.com/
+            Links:  
+            http://www.html5rocks.com/en/tutorials/appcache/beginner/
+            https://pugpig.zendesk.com/hc/en-us/articles/200948946-HTML-Manifest-Document-Type
+            Debug offline manifest in chrome: look for errors in the console / under resources -> Application Cache.
+         */
+        
         public ManifestCreator()
         {
 
@@ -33,13 +44,6 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             strb.Append("*" + Environment.NewLine);
 
             return strb.ToString();
-        }
-
-        private List<string> GetOfflineUrls()
-        {
-            //lookup current episerver page / page.
-
-            throw new NotImplementedException();
         }
     }
 }

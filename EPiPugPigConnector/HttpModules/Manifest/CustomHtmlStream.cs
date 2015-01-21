@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
+using EPiPugPigConnector.Caching;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
@@ -29,16 +31,40 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             {
                 string htmlDocument = Encoding.UTF8.GetString(cacheStream.ToArray(), 0, (int)cacheStream.Length);
 
-                //modify html output here.
-                var htmlProcessor = new RelativeUrlHtmlProcessor(currentRequestUri);
-                htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
-                
+                //Get the manifest
+                htmlDocument = GetManifest(htmlDocument);
+
                 var buffer = Encoding.UTF8.GetBytes(htmlDocument);
                 this.filter.Write(buffer, 0, buffer.Length);
                 cacheStream.SetLength(0);
             }
 
             this.filter.Flush();
+        }
+
+        private string GetManifest(string htmlDocument)
+        {
+            string cacheKey = currentRequestUri.ToString();
+
+            var cacheprovider = new DefaultCacheProvider();
+            if (cacheprovider.IsSet(cacheKey))
+            {
+                //Get from cache
+                return (string)cacheprovider.Get(cacheKey);
+            }
+            else
+            {
+                //Create manifest output here.
+                var htmlProcessor = new RelativeUrlHtmlProcessor(currentRequestUri);
+                htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
+
+                //Add to cache
+                cacheprovider.Set(
+                    cacheKey, 
+                    htmlDocument, 
+                    new DateTimeOffset(DateTime.Now + new TimeSpan(hours:0, minutes:2, seconds:0)));
+                return htmlDocument;
+            }
         }
 
         public override long Seek(long offset, SeekOrigin origin)

@@ -20,6 +20,8 @@ namespace EPiPugPigConnector.Editions.Factories
         /// </summary>
         public static string GenerateXmlFrom(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData, bool includeGeneratedTimeComment = true)
         {
+            //TODO: Object cache the xml creation here. 
+
             //create the xml
             var stopwatch = new StopwatchTimer();
 

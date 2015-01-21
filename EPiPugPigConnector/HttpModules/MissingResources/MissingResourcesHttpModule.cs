@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace EPiPugPigConnector.HttpModules.MissingResources
@@ -27,11 +29,37 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
 
         void context_Error(object sender, EventArgs e)
         {
+            string fileExtension = HttpContext.Current.Request.CurrentExecutionFilePathExtension;
 
+            if (HttpContext.Current.Response.ContentType != "text/html")
+            {
+                if (IsManifestAssetFileExtension(fileExtension))
+                {
+                    if (HttpContext.Current.Error.Message.Contains("404"))
+                    {
+
+                    }
+                }
+            }
+        }
+
+        private bool IsManifestAssetFileExtension(string fileExtension)
+        {
+            fileExtension = fileExtension.ToLower();
+            var validFileExtensions = new List<string>()
+            {
+                ".png", ".jpg", ".jpeg", "gif", ".css", ".js"
+            };
+
+            return validFileExtensions.Any(extension => extension.Equals(fileExtension));
         }
 
         void context_EndRequest(object sender, EventArgs e)
         {
+
+            //returns 200 instead of errors on files reqeusted by .html pages.
+            //To prevent offline manifest creation from failing (one single asset file failing and the offline manifest
+            //download proccess is stopped.
             var httpApplication = (HttpApplication)sender;
             var context = httpApplication.Context;
 
