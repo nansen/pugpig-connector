@@ -21,14 +21,14 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 
         public string ProcessHtml(string htmlDocument)
         {
-            var urlsToCache = GetUrlsToCache(htmlDocument);
+            var urlsToCache = GetAssetUrlsForManifest(htmlDocument);
             ManifestCreator manifestCreator = new ManifestCreator();
             string manifest = manifestCreator.MakeManifestFileAsString(urlsToCache);
 
             return manifest;
         }
 
-        private List<string> GetUrlsToCache(string htmlDocument)
+        private List<string> GetAssetUrlsForManifest(string htmlDocument)
         {
             /*
             Use 3rd party components like HtmlAgility pack or CsQuery 
