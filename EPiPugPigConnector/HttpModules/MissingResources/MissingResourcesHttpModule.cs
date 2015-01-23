@@ -7,11 +7,14 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
 {
     /// <summary>
     /// Offline manifest download gets interupted if a referenced file is missing
-    /// Therefore even though the file requested for is not not found just server 200 ok
-    /// To avoid problems with manifest downloads.
+    /// Therefore if a manifest asset type of file is asked for and 404 (not found) or 500 (server error)
+    /// is returned, override this and return 200 (OK) with an empty response.
+    /// This avoids problems with manifest downloads.
     /// 
     /// Also if a manifest gets generated for /start.html and another manifest points to the same file
-    /// the manifests must be cached to avoid "manifest changed during update" error in the client browser.
+    /// the manifests must be cached to avoid;
+    /// "Application Cache Error event: Manifest changed during update" error in the client browser.
+    ///
     /// E.g. you shouldnt create two versions of the same manifest file before a page has finished downloading the assets...
     /// (its a cascading manifest downloading problem).
     /// </summary>

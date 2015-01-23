@@ -173,7 +173,9 @@
     <Compile Include="Editions\EditionsXml\TestEditionXmlFactory.cs" />
     <Compile Include="Editions\EditionsXml\TestEditionsXmlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stopwatch.cs" />
+    <Compile Include="TestUtilities\Stopwatch.cs" />
+    <Compile Include="UnitTest_Html_Link_Generator.cs" />
+    <Compile Include="UnitTest_MyClass_Template.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPiPugPigConnector\EPiPugPigConnector.csproj">

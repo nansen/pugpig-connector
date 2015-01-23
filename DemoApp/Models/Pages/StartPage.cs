@@ -17,6 +17,7 @@ namespace DemoApp.Models.Pages
     [AvailableContentTypes(
         Availability.Specific,
         Include = new[] { typeof(ContainerPage), typeof(ProductPage), typeof(StandardPage), typeof(SearchPage), typeof(LandingPage), typeof(ContentFolder) }, // Pages we can create under the start page...
+        IncludeOn = new []{ typeof(EPiPugPigConnector.Editions.Models.Pages.EditionPage)}, // will make the startpage available under the specified pages
         ExcludeOn = new[] { typeof(ContainerPage), typeof(ProductPage), typeof(StandardPage), typeof(SearchPage), typeof(LandingPage) })] // ...and underneath those we can't create additional start pages
     public class StartPage : SitePageData
     {

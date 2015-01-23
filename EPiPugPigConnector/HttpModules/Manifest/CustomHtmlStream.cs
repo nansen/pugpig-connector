@@ -46,11 +46,10 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         {
             string cacheKey = currentRequestUri.ToString();
 
-            var cacheprovider = new DefaultCacheProvider();
-            if (cacheprovider.IsSet(cacheKey))
+            if (DefaultCacheProvider.IsSet(cacheKey))
             {
                 //Get from cache
-                return (string)cacheprovider.Get(cacheKey);
+                return (string)DefaultCacheProvider.Get(cacheKey);
             }
             else
             {
@@ -59,7 +58,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
                 htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
 
                 //Add to cache
-                cacheprovider.Set(
+                DefaultCacheProvider.Set(
                     cacheKey, 
                     htmlDocument, 
                     new DateTimeOffset(DateTime.Now + new TimeSpan(hours:0, minutes:2, seconds:0)));

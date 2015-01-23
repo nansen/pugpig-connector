@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using EPiPugPigConnector.Mvc;
+using EPiPugPigConnector.PageEvents;
 using EPiServer;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;

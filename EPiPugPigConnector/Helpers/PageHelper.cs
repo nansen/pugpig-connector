@@ -81,9 +81,16 @@ namespace EPiPugPigConnector.Helpers
 
         public static EditionsContainerPage GetAncestorEditionsContainerPage(PageData page)
         {
+            if (page is EditionsContainerPage)
+            {
+                return page as EditionsContainerPage;
+            }
+
             if (page is EditionPage)
             {
-                return page.ParentLink.Get<EditionsContainerPage>();
+                var parentPage = page.ParentLink.Get<EditionsContainerPage>();
+                if(parentPage != null)
+                    return parentPage;
             }
 
             //if page is descendant of an editions page.
@@ -106,9 +113,7 @@ namespace EPiPugPigConnector.Helpers
         public static string GetFriendlyUrlWithExtension(PageData page, string extension, bool includeHost = true)
         {
             string friendlyUrl = page.GetFriendlyUrl(includeHost);
-            friendlyUrl = friendlyUrl.TrimEnd(new[] {'/'});
-
-            return String.Format("{0}{1}", friendlyUrl, extension);
+            return HtmlHelper.FriendlyUrlToUrlWithExtension(friendlyUrl, extension);
         }
 
         public static PageReference GetPageReferenceFromExternalUrl(Uri uri)

@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Caching\CacheProvider - Copy.cs" />
     <Compile Include="Caching\DefaultCacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
     <Compile Include="Constants.cs" />
@@ -192,6 +193,8 @@
     <Compile Include="Editions\Factories\EditionXmlFactory.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
+    <Compile Include="ExtensionMethods\EnumExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
@@ -204,7 +207,7 @@
     <Compile Include="HttpModules\MissingResources\MissingResourcesHttpModule.cs" />
     <Compile Include="Logging\LogHelper.cs" />
     <Compile Include="PreApplicationStart.cs" />
-    <Compile Include="PugPigPageEventsHandler.cs" />
+    <Compile Include="PageEvents\PugPigPageEventsHandler.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsFeedElement.cs" />
     <Compile Include="Editions\PageTreeEditionsGenerator.cs" />
     <Compile Include="Editions\Factories\EditionsXmlFactory.cs" />

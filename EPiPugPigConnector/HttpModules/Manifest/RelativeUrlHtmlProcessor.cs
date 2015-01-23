@@ -4,8 +4,9 @@ using System.Linq;
 using CsQuery;
 using CsQuery.ExtensionMethods;
 using EPiPugPigConnector.EPiExtensions;
+using EPiPugPigConnector.Helpers;
+using EPiServer;
 using EPiServer.Core;
-using EPiServer.XForms.WebControls;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
@@ -29,17 +30,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 
         private List<string> GetUrlsToCache(string htmlDocument)
         {
-            /* 
-            The cache manifest offline file for pugpig implementation
-            requires links to be page relative.      
-            The page http://epipugpigdemo.azurewebsites.net/about-us/management/ has this link element:
-            
-            <link href="/Static/css/bootstrap.css" rel="stylesheet" />
-            Which is “website root relative”
-
-            But what we really need is “truly” page relative url such as: (?)
-            <link href="../../Static/css/bootstrap.css" rel="stylesheet" />
-
+            /*
             Use 3rd party components like HtmlAgility pack or CsQuery 
             to filter out a collection of elements that contains link attributes and modify those.
             e.g. a, img, link, script etc
@@ -50,17 +41,9 @@ namespace EPiPugPigConnector.HttpModules.Manifest
              * img src
              * form action (?)
             */
-            //TODO: process all of the above type of links.
 
-            //Using csQuery (jQuery like syntax)
+            //Processing urls using CsQuery (jQuery like syntax) for parsing html easily - https://github.com/jamietre/CsQuery
             CQ htmlDom = htmlDocument;
-
-            //htmlDom .Select("link")
-            //    .Each(item => item.HasAttribute("href"))
-            //    .Each(item => item.SetAttribute("href", GetPageRelativeUrl(item.GetAttribute("href"))));
-
-            //process urls
-            //using https://github.com/jamietre/CsQuery
 
             string result = string.Empty;
             var results = new List<string>();
@@ -79,9 +62,9 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             results.Add("# JS FILES:");
             results.AddRange(scriptUrls);
             
-            results.Add(System.Environment.NewLine);
-            results.Add("# ANCHOR ELEMENT URLS:");
-            results.AddRange(anchorLinkUrls);
+            //results.Add(System.Environment.NewLine);
+            //results.Add("# ANCHOR ELEMENT URLS:");
+            //results.AddRange(anchorLinkUrls);
 
             results.Add(System.Environment.NewLine);
             results.Add("# IMAGE FILES:");
@@ -89,57 +72,48 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             results.Add(System.Environment.NewLine);
             
             return results;
-
-            //return as string
-            //return string.Join(System.Environment.NewLine, results.ToArray());
         }
 
         private List<string> GetAnchorLinkUrls(CQ htmlDom)
         {
             var links = GetUrlsFrom(htmlDom, "a", "href");
             links = links.Distinct().ToList();
-
             
             for (int index = 0; index < links.Count; index++)
             {
                 var link = links[index];
                 
-                //fix startpage link
-                if (link.Equals("/"))
-                {
-                    link = GetStartPageUrl();
-                    links[index] = link;
-                }
-
                 //to .html links
                 if (link.EndsWith("/"))
                 {
-                    link = link.TrimEnd(new[] { '/' });
-                    link = string.Format("{0}.html", link);
+                    link = HtmlHelper.FriendlyUrlToUrlWithExtension(link, "html");
                     links[index] = link;
                 }
 
-                //remove login link: /Util/login.aspx?ReturnUrl=/editions-root-page/the-edition-issue-1/startpage/article-page-1/
-                if(link.ToLower().StartsWith("/util/login.aspx") ||
-                   link.ToLower().EndsWith("/logout.html"))
+                ////remove login link: /Util/login.aspx?ReturnUrl=/editions-root-page/the-edition-issue-1/startpage/article-page-1/
+                //if(link.ToLower().StartsWith("/util/login.aspx") ||
+                //   link.ToLower().EndsWith("/logout.html"))
+                //{
+                //    //remove 
+                //    links.RemoveAt(index);
+                //    if (index > 0)
+                //        index--;
+                //}
+                
+                //remove .aspx links
+                var uriLink = new EPiServer.UrlBuilder(link);
+                if (uriLink.Path.ToLower().EndsWith(".aspx"))
                 {
                     //remove 
                     links.RemoveAt(index);
                     if (index > 0)
+                    {
                         index--;
+                    }
                 }
             }
-            
-            //TODO:
-            //get .html based links:
 
             return links;
-        }
-
-        private string GetStartPageUrl()
-        {
-            var url = PageReference.StartPage.GetPage().URLSegment;
-            return string.Format("/{0}/", url);
         }
 
         /// <summary>

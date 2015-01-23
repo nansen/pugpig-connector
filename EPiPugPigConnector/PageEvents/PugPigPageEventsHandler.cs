@@ -1,29 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAccess;
-using EPiServer.Security;
-using EPiServer.ServiceLocation;
 
-namespace EPiPugPigConnector
+namespace EPiPugPigConnector.PageEvents
 {
     public class PugPigPageEventsHandler
     {
         public void Instance_PublishingPage(object sender, PageEventArgs e)
         {
             //Occurs before PublishedPage event. "page is about the be published".
-            UpdateEditionSubPageChangeDate(e.Page);
+            UpdateSubPageChanged(e.Page);
         }
 
         public void Instance_PublishedPage(object sender, PageEventArgs e)
         {
-            UpdatePugPigFeedsChangedDate(e.Page);
+            //Occurs after page is published.
+            UpdateFeedsChanged(e.Page);
 
             //TODO: Clear affected cache for xml files and manifest files here
         }
@@ -49,7 +45,7 @@ namespace EPiPugPigConnector
 
                 //get target pugpigsfeeds if different.
                 var targetEditionPage = PageHelper.GetAncestorEditionPage(moveArgs.TargetLink.GetPage());
-                var targetEditionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(targetEditionPage);
+                var targetEditionsContainerPage = PageHelper.GetAncestorEditionsContainerPage(moveArgs.TargetLink.GetPage());
 
                 if (targetEditionPage != null && sourceEditionPage != null)
                 {
@@ -77,10 +73,9 @@ namespace EPiPugPigConnector
         }
 
         /// <summary>
-        /// Updates change date for this page Edition and Editioncontainer.
+        /// Updates change date for parental Edition and Editioncontainer.
         /// </summary>
-        /// <param name="page"></param>
-        private void UpdatePugPigFeedsChangedDate(PageData page)
+        private void UpdateFeedsChanged(PageData page)
         {
             //If sending page is a valid subpage part of an Pugpig edition.
             if (!PageHelper.IsEditionsContainerOrEditionPage(page) && PageHelper.IsValidPugPigPage(page))
@@ -104,7 +99,7 @@ namespace EPiPugPigConnector
             }
         }
 
-        private void UpdateEditionSubPageChangeDate(PageData page)
+        private void UpdateSubPageChanged(PageData page)
         {
             if (!PageHelper.IsEditionsContainerOrEditionPage(page))
             {

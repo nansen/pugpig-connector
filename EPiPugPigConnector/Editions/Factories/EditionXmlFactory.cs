@@ -110,8 +110,8 @@ namespace EPiPugPigConnector.Editions.Factories
             var data = new EditionEntryXmlElement
             {
                 EntryId = "PageEntryId-" + page.ContentLink.ID,
-                EntryHtmlLink = PageHelper.GetFriendlyUrlWithExtension(page, ".html"),
-                EntryManifestLink = PageHelper.GetFriendlyUrlWithExtension(page, ".manifest"),
+                EntryHtmlLink = PageHelper.GetFriendlyUrlWithExtension(page, "html", includeHost: true), //must be absolute url e.g. http://editions/edition1/start.html
+                EntryManifestLink = PageHelper.GetFriendlyUrlWithExtension(page, "manifest", includeHost: true), //must be absolute url
                 EntryTitle = entryTitleValue,
                 EntrySummary = entrySummarTextValue,
                 EntryUpdated = XmlHelper.GetDateTimeXmlFormatted(page.Changed)
