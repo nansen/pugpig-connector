@@ -4,9 +4,12 @@ using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 using EPiPugPigConnector.Helpers;
+using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
+using EPiServer.Shell.ObjectEditing;
+using EPiServer.Web;
 
 namespace EPiPugPigConnector.Editions.Models.Pages
 {
@@ -29,69 +32,89 @@ namespace EPiPugPigConnector.Editions.Models.Pages
             get { return true; }
         }
 
-        [Display(GroupName = SystemTabNames.Content, Order = 110, Name = "Edition title", Description = "E.g. \"The Company Magazine Issue #4 - 2014\"")]
+        [Display(GroupName = SystemTabNames.Content, Order = 105, Name = "Edition Link Cover Image", Description = "/img/cover.jpg")]
+        [DefaultDragAndDropTarget]
+        [UIHint(UIHint.Image)]
         [CultureSpecific]
-        public virtual string EntryTitle { get; set; }
+        public virtual Url EntryLinkCoverImage
+        {
+            get
+            {
+                return this.GetPropertyValue(page => page.EntryLinkCoverImage);
+                //Url imageUrl = this.GetPropertyValue(page => page.EntryLinkCoverImage);
+                //if (imageUrl == null || imageUrl.IsEmpty())
+                //{
+                //    return new Url("/Static/gfx/logotype.png");
+                //}
+                //else
+                //{
+                //    return imageUrl;
+                //}
+            }
+            set { this.SetPropertyValue(page => page.EntryLinkCoverImage, value); }
+        }
 
-        [Display(GroupName = SystemTabNames.Content, Order = 120, Name = "Author name", Description = "E.g. \"Charlie Sheen\"")]
+        [Display(GroupName = SystemTabNames.Content, Order = 110, Name = "Edition title", 
+            Description = "E.g. \"The Company Magazine Issue #4 - 2014\", if not set fallbacks to Page name.")]
         [CultureSpecific]
-        public string EntryAuthorName
+        public virtual string EntryTitle
+        {
+            get
+            {
+                string value = this.GetPropertyValue(p => p.EntryTitle);
+                string valueFallback = this.PageName;
+                return !string.IsNullOrWhiteSpace(value) ? value : valueFallback;
+            }
+            set { this.SetPropertyValue(p => p.EntryTitle, value); }
+        }
+
+        [Display(GroupName = SystemTabNames.Content, Order = 120, Name = "Author name", Description = "E.g. \"Charlie Sheen\", if not set fallbacks to Episerver Created by property")]
+        [CultureSpecific]
+        public virtual string EntryAuthorName
         {
             get
             {
                 string value = this.GetPropertyValue(p => p.EntryAuthorName);
                 string valueFallback = this.CreatedBy;
-                // Use value, otherwise fallback
-                return !string.IsNullOrWhiteSpace(value)
-                       ? value
-                       : valueFallback;
+                return !string.IsNullOrWhiteSpace(value) ? value : valueFallback;
             }
             set { this.SetPropertyValue(p => p.EntryAuthorName, value); }
         }
 
         [Display(GroupName = SystemTabNames.Content, Order = 130, Name = "Edition Summary Text", Description = "Can be empty")]
         [CultureSpecific]
-        public string EntrySummaryText { get; set; }
+        public virtual string EntrySummaryText { get; set; }
 
-        [Display(GroupName = SystemTabNames.Content, Order = 140, Name = "Edition Link Cover Image",
-            Description = "/img/cover.jpg")]
-        [CultureSpecific]
-        public string EntryLinkCoverImage
-        {
-            get { return this.GetPropertyValue(p => p.EntryLinkCoverImage) ?? string.Empty; }
-            set { this.SetPropertyValue(p => p.EntryLinkCoverImage, value); }
-        }
-
-            #region NonEditorProperties
+        #region NonEditorProperties
 
             [ScaffoldColumn(false)]
-            public string EntryId
+            public virtual string EntryId
             {
                 get { return EditionsHelper.GetEntryId(this); }
                 set { throw new NotImplementedException(); }
             }
 
             [ScaffoldColumn(false)]
-            public string EntryUpdated
+            public virtual string EntryUpdated
             {
                 get { return GetEntryUpdatedFormatted(this.Changed); }
                 set { this.SetPropertyValue(p => p.EntryUpdated, value); }
             }
 
-            public string GetEntryUpdatedFormatted(DateTime dateTimeUpdated)
+            public virtual string GetEntryUpdatedFormatted(DateTime dateTimeUpdated)
             {
                 return XmlHelper.GetDateTimeXmlFormatted(dateTimeUpdated);
             }
 
             [ScaffoldColumn(false)]
-            public string EntryDcTermsIssued
+            public virtual string EntryDcTermsIssued
             {
                 get { return EditionsHelper.EntryDcTermsIssued(this.Changed); }
                 set { }
             }
 
             [ScaffoldColumn(false)]
-            public string EntryLinkEditionXml {
+            public virtual string EntryLinkEditionXml {
                 get { return EditionsHelper.GetEntryLinkEditionXml(this); }
                 set { } 
             }
@@ -99,28 +122,26 @@ namespace EPiPugPigConnector.Editions.Models.Pages
             #endregion NonEditorProperties
 
         #endregion IEditionsEntryElement
-
-
-
+        
 
         #region IEditionFeedElement - Edition.xml feed specific props.
 
         [ScaffoldColumn(false)]
-        public string FeedId
+        public virtual string FeedId
         {
             get { return this.EntryId; }
             set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string FeedLink
+        public virtual string FeedLink
         {
             get { return this.EntryLinkEditionXml; }
             set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string FeedTitle
+        public virtual string FeedTitle
         {
             get { return this.EntryTitle; }
             set { throw new NotImplementedException(); }
@@ -129,17 +150,17 @@ namespace EPiPugPigConnector.Editions.Models.Pages
         [Display(GroupName = SystemTabNames.Content, Order = 125, Name = "Edition subtitle",
             Description = "E.g. \"This is a sample edition with 2 pages")]
         [CultureSpecific]
-        public string FeedSubtitle { get; set; }
+        public virtual string FeedSubtitle { get; set; }
 
         [ScaffoldColumn(false)]
-        public string FeedAuthorName
+        public virtual string FeedAuthorName
         {
             get { return this.EntryAuthorName; }
             set { throw new NotImplementedException(); }
         }
 
         [ScaffoldColumn(false)]
-        public string FeedUpdated
+        public virtual string FeedUpdated
         {
             get { return this.EntryUpdated; }
             set { throw new NotImplementedException(); }

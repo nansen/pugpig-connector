@@ -8,6 +8,7 @@ using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.Editions.Models.Pages.Helpers;
 using EPiPugPigConnector.Helpers;
+using EPiServer;
 
 namespace EPiPugPigConnector.Fakes.Pages
 {
@@ -51,7 +52,8 @@ namespace EPiPugPigConnector.Fakes.Pages
         public string EntryAuthorName { get; set; }
         public string EntryDcTermsIssued { get; set; }
         public string EntrySummaryText { get; set; }
-        public string EntryLinkCoverImage { get; set; }
+        //public string EntryLinkCoverImage { get; set; }
+        public Url EntryLinkCoverImage { get; set; }
         public string EntryLinkEditionXml { get; set; }
     }
 }

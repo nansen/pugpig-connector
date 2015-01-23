@@ -1,4 +1,5 @@
 ﻿using System;
+using EPiServer;
 
 namespace EPiPugPigConnector.Editions.Interfaces.Editions
 {
@@ -50,7 +51,7 @@ namespace EPiPugPigConnector.Editions.Interfaces.Editions
         /// <summary>
         /// "/img/cover.jpg"
         /// </summary>
-        string EntryLinkCoverImage { get; set; }
+        Url EntryLinkCoverImage { get; set; }
 
         /// <summary>
         /// The link to the Edition.xml file.

@@ -6,6 +6,9 @@ using System.Xml.Linq;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.Utils;
+using EPiServer;
+using EPiPugPigConnector.EPiExtensions;
+using EPiServer.Web.Routing;
 
 namespace EPiPugPigConnector.Editions.Factories
 {
@@ -74,11 +77,23 @@ namespace EPiPugPigConnector.Editions.Factories
                 new XElement(_atomNS + "summary", 
                     new XAttribute("type", "text"),
                     entryData.EntrySummaryText),
-                XmlHelper.GetLinkElement("http://opds-spec.org/image", "image/jpg", entryData.EntryLinkCoverImage),
+                XmlHelper.GetLinkElement("http://opds-spec.org/image", "image/jpg", GetContentExternalUrl(entryData.EntryLinkCoverImage)),
                 XmlHelper.GetLinkElement("http://opds-spec.org/acquisition", "application/atom+xml", entryData.EntryLinkEditionXml),
                 XmlHelper.GetLinkElement("alternate", "application/atom+xml", entryData.EntryLinkEditionXml)
             );
             return entryElement;
+        }
+
+        private static string GetContentExternalUrl(Url url)
+        {
+            string externalUrl = string.Empty;
+
+            if (url != null && !url.IsEmpty())
+            {
+                var urlResolver = new UrlResolver();
+                externalUrl = urlResolver.GetUrl(url.ToString());
+            }
+            return externalUrl;
         }
 
         private static XElement CreateFeedXmlFrom(IEditionsFeedElement rootData)
