@@ -1,17 +1,17 @@
-﻿using EPiPugPigConnector.ManifestOldImplementation;
+﻿//using EPiPugPigConnector.ManifestOldImplementation;
 
-namespace EPiPugPigConnector.Fakes
-{
-    public class FakeManifestFactory : IManifestFactory
-    {
-        public void WriteManifestFile()
-        {
-            // TODO:  Fake creating manifest file
-        }
+//namespace EPiPugPigConnector.Fakes
+//{
+//    public class FakeManifestFactory : IManifestFactory
+//    {
+//        public void WriteManifestFile()
+//        {
+//            // TODO:  Fake creating manifest file
+//        }
 
-        public void FindPagesAndAddThem()
-        {
-            // TODO:  Fake creating manifest file
-        }
-    }
-}
+//        public void FindPagesAndAddThem()
+//        {
+//            // TODO:  Fake creating manifest file
+//        }
+//    }
+//}
