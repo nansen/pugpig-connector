@@ -227,9 +227,6 @@
     <Compile Include="HttpModules\CustomHtml\CustomHtmlStream.cs" />
     <Compile Include="HttpModules\CustomHtml\CustomHtmlHttpModule.cs" />
     <Compile Include="Initializer.cs" />
-    <Compile Include="ManifestOldImplementation\DummyWorkerRequest.cs" />
-    <Compile Include="ManifestOldImplementation\ManifestFactory.cs" />
-    <Compile Include="ManifestOldImplementation\ManifestModel.cs" />
     <Compile Include="Editions\Interfaces\Editions\IEditionsEntryElement.cs" />
     <Compile Include="Editions\Models\Pages\EditionPage.cs" />
     <Compile Include="Editions\Models\Pages\EditionsContainerPage.cs" />
