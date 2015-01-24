@@ -2,8 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EPiPugPigConnector.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="pugpig_enable_logging" Type="System.Boolean" Scope="Application">
+    <Setting Name="pugpig_log_enabled" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="pugpig_log_filename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">App_Data\pugpig_connector.log</Value>
+    </Setting>
+    <Setting Name="pugpig_log_loglevel" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ALL</Value>
     </Setting>
   </Settings>
 </SettingsFile>

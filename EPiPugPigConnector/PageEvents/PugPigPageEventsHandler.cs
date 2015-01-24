@@ -2,6 +2,7 @@ using System;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
+using EPiPugPigConnector.Logging;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAccess;
@@ -20,7 +21,6 @@ namespace EPiPugPigConnector.PageEvents
         {
             //Occurs after page is published.
             UpdateFeedsChanged(e.Page);
-
             //TODO: Clear affected cache for xml files and manifest files here
         }
 
@@ -106,7 +106,15 @@ namespace EPiPugPigConnector.PageEvents
                 //Set changed date on the current page since this is not standard EPiServer behaviour. -> used in <updated> in the xml feed
                 page.SetChangedOnPublish = true; //http://dodavinkeln.se/post/how-to-set-a-page-updated-programmatically
                 page.Changed = DateTime.Now;
+
+                LogPageChanged(page);
             }
+        }
+
+        private static void LogPageChanged(PageData page)
+        {
+            LogHelper.Log(string.Format("Page name {0} id {1} updated change date to {2}", page.PageName,
+                page.PageLink.ID, page.Changed.ToString("o")));
         }
 
         private void SetChangedDate(PageData page, DateTime changed)
@@ -117,9 +125,11 @@ namespace EPiPugPigConnector.PageEvents
                 clone.SetChangedOnPublish = true; 
                 clone.Changed = changed;
                 DataFactory.Instance.Save(clone, SaveAction.ForceCurrentVersion); //avoids triggering the published event again.
+                LogPageChanged(page);
 
                 //remove page from episerver cache
                 DataFactoryCache.RemovePage(page.ContentLink);
+                LogHelper.Log(string.Format("Page id {0} was removed from episerver cache after SaveAction.ForceCurrentVersion", page.ContentLink));
             }
         }
     }

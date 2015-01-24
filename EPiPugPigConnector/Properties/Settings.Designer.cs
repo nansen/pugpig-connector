@@ -26,9 +26,27 @@ namespace EPiPugPigConnector.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool pugpig_enable_logging {
+        public bool pugpig_log_enabled {
             get {
-                return ((bool)(this["pugpig_enable_logging"]));
+                return ((bool)(this["pugpig_log_enabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("App_Data\\pugpig_connector.log")]
+        public string pugpig_log_filename {
+            get {
+                return ((string)(this["pugpig_log_filename"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ALL")]
+        public string pugpig_log_loglevel {
+            get {
+                return ((string)(this["pugpig_log_loglevel"]));
             }
         }
     }

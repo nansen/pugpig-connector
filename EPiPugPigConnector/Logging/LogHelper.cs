@@ -5,6 +5,8 @@ using log4net.Config;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
 using System.Text;
+using EPiPugPigConnector.Properties;
+using Microsoft.SqlServer.Server;
 
 namespace EPiPugPigConnector.Logging
 {
@@ -40,9 +42,14 @@ namespace EPiPugPigConnector.Logging
             }
         }
 
+        /// <summary>
+        /// Adds a message to the pugpig logger. Default logging level is Error, if not given (optional).
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="logLevel">Default value is Error</param>
         public static void Log(string message, LogLevel logLevel = LogLevel.Error)
         {
-            if (Properties.Settings.Default.pugpig_enable_logging)
+            if (Properties.Settings.Default.pugpig_log_enabled)
             {
                 switch (logLevel)
                 {
@@ -75,16 +82,35 @@ namespace EPiPugPigConnector.Logging
             //Adds a log4net logger programmatically.
             string loggerName = PUGPIG_CONNECTOR_LOGGER_NAME;
             string fileAppenderName = PUGPIG_CONNECTOR_FILE_APPENDER_NAME;
-            string logFile = @"App_Data\pugpig_connector.log";
+            string logFile = GetFileName();
+            string logLevel = GetLogLevel();
 
-            SetLevel(loggerName, "ALL");
+            SetLevel(loggerName, logLevel);
             AddAppender(loggerName, CreateFileAppender(fileAppenderName, logFile));
 
             Log("Pugpig connector logger started", LogLevel.Debug);        
         }
-        
+
+        private static string GetFileName()
+        {
+            if (!string.IsNullOrEmpty(Settings.Default.pugpig_log_filename))
+            {
+                return Settings.Default.pugpig_log_filename;
+            }
+            return @"App_Data\pugpig_connector.log"; //fallback
+        }
+
+        private static string GetLogLevel()
+        {
+            if (!string.IsNullOrEmpty(Settings.Default.pugpig_log_loglevel))
+            {
+                return Settings.Default.pugpig_log_loglevel.ToUpper();
+            }
+            return "ALL"; //fallback
+        }
+
         // Set the level for a named logger
-        public static void SetLevel(string loggerName, string levelName)
+        private static void SetLevel(string loggerName, string levelName)
         {
             ILog log = LogManager.GetLogger(loggerName);
             Logger l = (Logger)log.Logger;
@@ -93,7 +119,7 @@ namespace EPiPugPigConnector.Logging
         }
 
         // Add an appender to a logger
-        public static void AddAppender(string loggerName, IAppender appender)
+        private static void AddAppender(string loggerName, IAppender appender)
         {
             ILog log = LogManager.GetLogger(loggerName);
             Logger l = (Logger)log.Logger;
@@ -102,11 +128,16 @@ namespace EPiPugPigConnector.Logging
         }
 
         // Create a new file appender
-        public static IAppender CreateFileAppender(string name, string fileName)
+        private static IAppender CreateFileAppender(string name, string fileName)
         {
-            FileAppender appender = new FileAppender();
-            appender.Name = name;
+            RollingFileAppender appender = new RollingFileAppender();
+            appender.Name = name; 
             appender.File = fileName;
+            appender.StaticLogFileName = true;
+            appender.DatePattern = ".yyyyMMdd";
+            appender.RollingStyle = RollingFileAppender.RollingMode.Date; //days
+            appender.MaxSizeRollBackups = 30; //days
+            appender.MaxFileSize = (2*1024*1024); // The default maximum file size is 10MB (10*1024*1024)
             appender.AppendToFile = true;
 
             PatternLayout layout = new PatternLayout();
