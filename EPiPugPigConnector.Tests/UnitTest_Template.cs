@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace EPiPugPigConnector.Tests
 {
     [TestClass]
-    public class UnitTest_MyClass_Template
+    public class UnitTest_Template
     {
         [TestMethod]
         public void Test_MethodDescription_Does_This_And_That()

@@ -1,22 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
 using EPiPugPigConnector.Editions.Factories;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Fakes.Pages;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
-namespace EPiPugPigConnector.Tests.Editions.EditionsXml
+namespace EPiPugPigConnector.Tests
 {
     [TestClass]
-    public class TestEditionsXmlFactory
+    public class UnitTest_EditionsXmlFactory
     {
+        ///// <summary>
+        ///// Mock episerver dependencies here
+        ///// </summary>
+        //[TestInitialize]
+        //public void MockEPiServerDependenciese()
+        //{
+        //    //From http://tedgustaf.com/blog/2013/10/unit-testing-in-episerver-7/
+
+        //    // Create a mock UrlResolver
+        //    var mockUrlResolver = new Mock<UrlResolver>();
+
+        //    // Setup the UrlResolver to return an url with a preset value
+            
+        //    mockUrlResolver
+        //        .Setup(urlResolver => urlResolver.GetUrl(""))
+        //        .Returns("/test/");
+
+        //    // Create a mock service locator
+        //    var mockLocator = new Mock<IServiceLocator>();
+
+        //    // Setup the service locator ("fool episerver") 
+        //    // to return our mock repository when an UrlResolver is requested
+        //    mockLocator.Setup(l => l.GetInstance<UrlResolver>()).Returns(mockUrlResolver.Object);
+
+        //    // Make use of our mock objects throughout EPiServer
+        //    ServiceLocator.SetLocator(mockLocator.Object);
+        //}
+
         [TestMethod]
         public void Test_Generate_Editions_Xml()
         {

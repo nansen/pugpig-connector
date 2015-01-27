@@ -3,6 +3,7 @@ using EPiPugPigConnector.Editions;
 using EPiPugPigConnector.Fakes;
 //using EPiPugPigConnector.ManifestOldImplementation;
 using EPiServer;
+using EPiServer.Web.Routing;
 using StructureMap.Configuration.DSL;
 
 namespace EPiPugPigConnector
@@ -14,7 +15,7 @@ namespace EPiPugPigConnector
             //For<IEditionsGenerator>().Use<FakePageTreeEditionsGenerator>();
             
             For<IEditionsGenerator>().Use<PageTreeEditionsGenerator>();
-            
+
             //For<IManifestFactory>().Use<FakeManifestFactory>();
         }
     }

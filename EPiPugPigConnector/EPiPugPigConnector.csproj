@@ -242,6 +242,7 @@
     </Compile>
     <Compile Include="RouteConfig.cs" />
     <Compile Include="Utils\StopwatchTimer.cs" />
+    <Compile Include="Utils\TestUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

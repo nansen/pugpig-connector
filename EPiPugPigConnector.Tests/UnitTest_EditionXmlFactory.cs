@@ -16,7 +16,7 @@
 //namespace EPiPugPigConnector.Tests.Editions.EditionsXml
 //{
 //    [TestClass]
-//    public class TestEditionXmlFactory
+//    public class UnitTest_EditionXmlFactory
 //    {
 //        [TestMethod]
 //        public void Test_Generate_Edition_Xml()

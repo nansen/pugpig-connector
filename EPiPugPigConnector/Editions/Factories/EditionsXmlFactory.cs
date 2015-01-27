@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -8,6 +9,7 @@ using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.Utils;
 using EPiServer;
 using EPiPugPigConnector.EPiExtensions;
+using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
 namespace EPiPugPigConnector.Editions.Factories
@@ -88,10 +90,13 @@ namespace EPiPugPigConnector.Editions.Factories
         {
             string externalUrl = string.Empty;
 
-            if (url != null && !url.IsEmpty())
+            if (!TestUtil.IsCalledFromTest())
             {
-                var urlResolver = new UrlResolver();
-                externalUrl = urlResolver.GetUrl(url.ToString());
+                if (url != null && !url.IsEmpty())
+                {
+                    var urlResolver = ServiceLocator.Current.GetInstance<UrlResolver>();
+                    externalUrl = urlResolver.GetUrl(url.ToString());
+                }
             }
             return externalUrl;
         }
