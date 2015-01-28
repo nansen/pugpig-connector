@@ -48,6 +48,6 @@ namespace EPiPugPigConnector.Caching
 {
     public class PugPigCache
     {
-        Caching.DefaultCacheProvider.Set(
+       // Caching.DefaultCacheProvider.Set(
     }
 }
