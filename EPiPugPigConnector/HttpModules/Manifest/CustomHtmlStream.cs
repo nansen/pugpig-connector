@@ -44,24 +44,22 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 
         private string GetManifest(string htmlDocument)
         {
-            string cacheKey = currentRequestUri.ToString();
+            string cacheKey = currentRequestUri.ToString(); //should map against page.GetFriendlyUrl(includeHost: true)
+            var cacheType = PugPigCacheType.Manifest;
 
-            if (DefaultCacheProvider.IsSet(cacheKey))
+            if (PugPigCache.IsSet(cacheType, cacheKey))
             {
                 //Get from cache
-                return (string)DefaultCacheProvider.Get(cacheKey);
+                return (string)PugPigCache.Get(cacheType, cacheKey);
             }
             else
             {
                 //Create manifest output here.
                 var htmlProcessor = new RelativeUrlHtmlProcessor(currentRequestUri);
                 htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
-
+                
                 //Add to cache
-                DefaultCacheProvider.Set(
-                    cacheKey, 
-                    htmlDocument, 
-                    new DateTimeOffset(DateTime.Now + new TimeSpan(hours:0, minutes:2, seconds:0)));
+                PugPigCache.Set(cacheType, cacheKey, htmlDocument);
                 return htmlDocument;
             }
         }

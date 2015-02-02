@@ -56,7 +56,11 @@ namespace EPiPugPigConnector.Caching
 
         public static void Invalidate(string key)
         {
-            Cache.Remove(key);
+            var result = Cache.Remove(key);
+            if (result == null)
+            {
+                Logging.LogHelper.Log(string.Format("Cache invalidate failed. No such cache key found, key value {0}", key));
+            }
         }
     }
 }

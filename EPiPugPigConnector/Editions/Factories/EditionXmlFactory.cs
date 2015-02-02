@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using EPiPugPigConnector.Caching;
 using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
@@ -22,7 +23,19 @@ namespace EPiPugPigConnector.Editions.Factories
         /// </summary>
         public static string GenerateXmlFrom(EditionPage editionPage)
         {
-            return GenerateRootAndFeedXml(editionPage);
+            var cacheType = PugPigCacheType.Feed;
+            string cacheKey = editionPage.ContentLink.ID.ToString();
+
+            if (PugPigCache.IsSet(cacheType, cacheKey))
+            {
+                return PugPigCache.Get(cacheType, cacheKey) as string;
+            }
+            else
+            {
+                string resultXml = GenerateRootAndFeedXml(editionPage);
+                PugPigCache.Set(cacheType, cacheKey, resultXml);
+                return resultXml;
+            }
         }
 
         private static string GenerateRootAndFeedXml(IEditionFeedElement editionFeedData)

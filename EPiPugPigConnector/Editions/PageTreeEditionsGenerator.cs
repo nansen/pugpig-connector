@@ -38,8 +38,8 @@ namespace EPiPugPigConnector.Editions
             {
                 throw new NullReferenceException("The editions container page or editions childpages was not found/not published.");
             }
-            
-            return EditionsXmlFactory.GenerateXmlFrom(containerPage, editionEntries);
+
+            return EditionsXmlFactory.GenerateXmlFrom(containerPage.ContentLink, containerPage, editionEntries);
         }
 
         public string GetEdition(string id)

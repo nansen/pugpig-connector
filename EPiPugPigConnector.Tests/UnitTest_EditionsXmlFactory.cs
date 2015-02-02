@@ -66,10 +66,9 @@ namespace EPiPugPigConnector.Tests
             };
 
             //Act
-            string resultXml = EditionsXmlFactory.GenerateXmlFrom(editionsRootPage, editionEntries, includeGeneratedTimeComment: false);
+            string resultXml = EditionsXmlFactory.GenerateXmlFrom(null, editionsRootPage, editionEntries, includeGeneratedTimeComment: false);
             //TODO: validate the feedxml at http://opds-validator.appspot.com/ (do it only manually perhaps?)
-
-
+            
             //Assert
             string expextedXmlBeginning =
                 "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" + System.Environment.NewLine +

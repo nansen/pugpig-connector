@@ -1,4 +1,5 @@
 using System;
+using EPiPugPigConnector.Caching;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
@@ -21,7 +22,6 @@ namespace EPiPugPigConnector.PageEvents
         {
             //Occurs after page is published.
             UpdateFeedsChanged(e.Page);
-            //TODO: Clear affected cache for xml files and manifest files here
         }
 
         public void Instance_MovingPage(object sender, PageEventArgs e)
@@ -62,11 +62,8 @@ namespace EPiPugPigConnector.PageEvents
                     //page is being deleted/moved to the WasteBasket
                 }
             }
-
-            //TODO: Clear affected cache for xml files and manifest files here
         }
-
-
+        
         public void Instance_DeletedPage(object sender, PageEventArgs e)
         {
             //Already handled in MovingPage event, a MovingPage event is triggered before DeletedPage event.
@@ -101,13 +98,19 @@ namespace EPiPugPigConnector.PageEvents
 
         private void UpdateSubPageChanged(PageData page)
         {
+            //Special behaviour for subpage to avoid a eternal published event loop if SetChangedOnPublish is not true
+            //(edition feed pages has this set to true default).
+
             if (!PageHelper.IsEditionsContainerOrEditionPage(page))
             {
                 //Set changed date on the current page since this is not standard EPiServer behaviour. -> used in <updated> in the xml feed
                 page.SetChangedOnPublish = true; //http://dodavinkeln.se/post/how-to-set-a-page-updated-programmatically
                 page.Changed = DateTime.Now;
-
+                
                 LogPageChanged(page);
+
+                //remove page manifest cache:
+                PugPigCache.InvalidateManifestCache(page);
             }
         }
 
@@ -130,6 +133,9 @@ namespace EPiPugPigConnector.PageEvents
                 //remove page from episerver cache
                 DataFactoryCache.RemovePage(page.ContentLink);
                 LogHelper.Log(string.Format("Page id {0} was removed from episerver cache after SaveAction.ForceCurrentVersion", page.ContentLink));
+
+                //remove page xml feed cache:
+                PugPigCache.InvalidateFeedCache(page);
             }
         }
     }

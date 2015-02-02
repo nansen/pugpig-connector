@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using EPiPugPigConnector.Caching;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.Utils;
 using EPiServer;
 using EPiPugPigConnector.EPiExtensions;
+using EPiServer.Core;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
@@ -23,11 +26,27 @@ namespace EPiPugPigConnector.Editions.Factories
         /// Step 1 of 4 to create a working connector:
         /// https://pugpig.zendesk.com/hc/en-us/articles/201079186-How-To-Write-A-Connector
         /// </summary>
-        public static string GenerateXmlFrom(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData, bool includeGeneratedTimeComment = true)
+        public static string GenerateXmlFrom(ContentReference contentReference, IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData, bool includeGeneratedTimeComment = true)
         {
-            //TODO: Object cache the xml creation here. 
+            var cacheType = PugPigCacheType.Feed;
+            string cacheKey = contentReference.ID.ToString();
 
-            //create the xml
+            if(PugPigCache.IsSet(cacheType, cacheKey))
+            {
+                return PugPigCache.Get(cacheType, cacheKey) as string;
+            }
+            else
+            {
+                string resultXml = GenerateResultXml(editionsFeedData, editionEntriesData, includeGeneratedTimeComment);
+                PugPigCache.Set(cacheType, cacheKey, resultXml);
+                return resultXml;
+            }
+        }
+
+        private static string GenerateResultXml(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData,
+            bool includeGeneratedTimeComment)
+        {
+//create the xml
             var stopwatch = new StopwatchTimer();
 
             XDocument rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));

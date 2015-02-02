@@ -6,7 +6,11 @@ The goal is to be able to add this project with some form of installer / powersh
 so that we can install this as a “plugin” to new EPiServer websites.
 ==========================================
 
-- "Url rewrite module" must be installed in IIS server. The following rules for redirecting .html and .manifest urls to dynamically
+- The episerver nuget feed must be added to the package manager in Visual Studio http://nuget.episerver.com/feed/packages.svc/
+VS will download references for episerver from this feed upon first build.
+
+- "Url rewrite module" must be installed in IIS server. http://www.iis.net/downloads/microsoft/url-rewrite
+The following rules for redirecting .html and .manifest urls to dynamically
 generated html and manifest files respectively:
 <system.webServer>
 	..................................
@@ -28,6 +32,12 @@ generated html and manifest files respectively:
       </rules>
     </rewrite>
 </system.webServer>
+
+* A couple of dynamically added modules will attach handling to missing images, html files (404 or 500) 
+to avoid offline manifest problems with pugpig (just returns 200 OK even if image is missing).
+handling for all urls with .html and .manifest extension.
+
+* A logfile will be added to ~/App_Data/pugpig_connector.log as default location.
 
 * Create a Editions Page template directly under the CMS root page, and add values to props.
 - you should only have one Editions Page per website. (it is used to render the editions.xml feed)

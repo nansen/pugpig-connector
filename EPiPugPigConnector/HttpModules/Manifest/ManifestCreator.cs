@@ -7,10 +7,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 {
     public class ManifestCreator
     {
-        //TODO: Object cache the manifest creation here. 
-        //TODO: unit test manifest creation
-
-        /* TODO: Complete the manifest creation. 
+        /* TODO: Validate the manifest. 
             See validator here: http://manifest-validator.com/
             Links:  
             http://www.html5rocks.com/en/tutorials/appcache/beginner/

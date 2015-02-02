@@ -184,9 +184,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Caching\CacheProvider - Copy.cs" />
+    <Compile Include="Caching\PugPigCacheType.cs" />
     <Compile Include="Caching\DefaultCacheProvider.cs" />
     <Compile Include="Caching\ICacheProvider.cs" />
+    <Compile Include="Caching\PugPigCache.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\EditionsController.cs" />
     <Compile Include="Controllers\ManifestController.cs" />
@@ -256,7 +257,7 @@
     <Content Include="Docs\Opds feed docs.txt" />
     <Content Include="Docs\Overview project urls.txt" />
     <Content Include="EPiExtensions\source.txt" />
-    <Content Include="Docs\Modifications to apply to the Web project.txt" />
+    <Content Include="Docs\Installation of connector Readme.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

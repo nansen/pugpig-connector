@@ -1,6 +1,15 @@
 ﻿@charset "utf-8";
 /* CSS Document */
 
+
+body {
+    background-image: url('../img/pugpig-not-working-glyphicons-halflings.png'); /* pugpig test NOT working asset url */
+}
+
+body h1 {
+    background-image: url('../img/pugpig-working-glyphicons-halflings.png'); /* pugpig test working asset url */
+}
+
 /*Headers*/
 
 #header {
