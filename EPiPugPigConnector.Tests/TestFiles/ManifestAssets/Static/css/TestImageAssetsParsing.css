@@ -1,0 +1,22 @@
+﻿#div1NoLiterals
+{
+    background-image:url(../gfx/leader.png);
+}
+
+#div2DoubleLiterals {
+    background-image: url("../img/glyphicons-halflings.png");
+}
+
+#div3SingleLiterals {
+    background-image: url('../fancyapps-fancyBox-3a66a9b/source/fancybox_sprite.png');
+}
+
+#div1NoLiteralsSameDir
+{
+    background-image:url(leader.png);
+}
+
+#div1NoLiteralsSameDirUnecessaryTraversing
+{
+    background-image:url(./leader.png);
+}

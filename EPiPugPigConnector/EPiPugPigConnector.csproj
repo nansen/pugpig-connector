@@ -195,6 +195,7 @@
     <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
     <Compile Include="ExtensionMethods\EnumExtensions.cs" />
+    <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />

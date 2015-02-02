@@ -173,12 +173,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TestUtilities\TestHelper.cs" />
     <Compile Include="UnitTest_EditionXmlFactory.cs" />
     <Compile Include="UnitTest_EditionsXmlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestUtilities\Stopwatch.cs" />
     <Compile Include="UnitTest_Html_Link_Generator.cs" />
     <Compile Include="UnitTest_Caching.cs" />
+    <Compile Include="UnitTest_CssFileManifestAssetParser.cs" />
     <Compile Include="UnitTest_Template.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,8 +190,101 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\ManifestAssets\Static\css\TestImageAssetsParsing.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\1_b.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\1_s.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\2_b.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\2_s.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\3_b.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\3_s.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\4_b.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\4_s.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\5_b.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\5_s.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\ajax.txt" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\iframe.html" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\demo\index.html" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\lib\jquery-1.7.2.min.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\lib\jquery.mousewheel-3.0.6.pack.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\blank.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\fancybox_loading.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\fancybox_sprite.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\fancybox_buttons.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\jquery.fancybox-buttons.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\jquery.fancybox-buttons.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\jquery.fancybox-media.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\jquery.fancybox-thumbs.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\helpers\jquery.fancybox-thumbs.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\jquery.fancybox.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\jquery.fancybox.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\source\jquery.fancybox.pack.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\carouselbackground.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\contact.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\exampelspan4.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\experts.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\fallows-media-wide.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\leader.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\leader2.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\logotype.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\meet.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\New_FDT_Press_Contact_.JPG" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\page-type-thumbnail-article.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\page-type-thumbnail-contact.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\page-type-thumbnail-product.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\page-type-thumbnail-standard.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\page-type-thumbnail.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\person.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\plan.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\play.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\playInactive.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\productLandingv2.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\searchbutton.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\searchbuttonsmall.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\gfx\track.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\html\error.htm" />
+    <Content Include="TestFiles\ManifestAssets\Static\img\glyphicons-halflings-white.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\img\glyphicons-halflings.png" />
+    <Content Include="TestFiles\ManifestAssets\Static\img\nansen.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\js\bootstrap.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\js\jquery.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\jwplayer\jwplayer.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\jwplayer\player.swf" />
+    <Content Include="TestFiles\ManifestAssets\Static\jwplayer\preview.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\jwplayer\video.mp4" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\css\jquery.lightbox-0.5.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\images\lightbox-blank.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\images\lightbox-btn-close.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\images\lightbox-btn-next.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\images\lightbox-btn-prev.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\images\lightbox-ico-loading.gif" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\index.htm" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\js\jquery.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\js\jquery.lightbox-0.5.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\js\jquery.lightbox-0.5.min.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\js\jquery.lightbox-0.5.pack.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\image1.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\image2.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\image3.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\image4.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\image5.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\thumb_image1.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\thumb_image2.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\thumb_image3.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\thumb_image4.jpg" />
+    <Content Include="TestFiles\ManifestAssets\Static\lightbox\photos\thumb_image5.jpg" />
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\CHANGELOG.md" />
+    <Content Include="TestFiles\ManifestAssets\Static\fancyapps-fancyBox-3a66a9b\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\ManifestAssets\Static\css\bootstrap-collapse.js" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\bootstrap-responsive.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\bootstrap.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\editmode.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\editor.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\media.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\style.css" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
