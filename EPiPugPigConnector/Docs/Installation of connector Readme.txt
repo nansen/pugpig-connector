@@ -33,9 +33,18 @@ generated html and manifest files respectively:
     </rewrite>
 </system.webServer>
 
-* A couple of dynamically added modules will attach handling to missing images, html files (404 or 500) 
-to avoid offline manifest problems with pugpig (just returns 200 OK even if image is missing).
-handling for all urls with .html and .manifest extension.
+* A couple of dynamically added modules will attach upon app startup.
+
+* Module for handling missing assets (404 or 500) to avoid offline manifest problems with pugpig (just returns 200 OK even if asset is missing).
+The missing assets module is dependent on this web.config setting on the <modules> section:
+<modules runAllManagedModulesForAllRequests="true"> to be able to "catch" static file request such as images and so on.
+For now the module is added dynamically, if added manually through config make sure:
+DONT set the attribute preCondition="managedHandler" directly on yhe missingfile module (this ensures that 
+only managed requests (ASP.NET type of files) are fired on this module).
+More info: http://weblog.west-wind.com/posts/2012/Oct/25/Caveats-with-the-runAllManagedModulesForAllRequests-in-IIS-78
+
+* Theres a module handling all all urls with .html and .manifest extension.
+* A module for creating manifest files on the file. (scans the outgoing html for assets)
 
 * A logfile will be added to ~/App_Data/pugpig_connector.log as default location.
 

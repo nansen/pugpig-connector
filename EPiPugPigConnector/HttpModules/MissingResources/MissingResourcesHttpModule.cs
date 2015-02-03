@@ -39,19 +39,21 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
         {
             var context = HttpContext.Current;
             string fileExtension = context.Request.CurrentExecutionFilePathExtension;
-            if (context.Response.ContentType != "text/html")
-            {
-                if (IsManifestAssetFileExtension(fileExtension))
-                {
+            //if (context.Response.ContentType != "text/html")
+            //{
+                //if (IsManifestAssetFileExtension(fileExtension))
+                //{
                     if (context.Error.Message.Contains("404"))
                     {
+                        //Handles missing EPiServer VPP files.
+                        //The Response code is actually 200 but an error will occur.
                         context.Response.Clear();
                         context.Response.StatusCode = 200;
                         context.Response.AddHeader("OfflineManifestErrorOverride_OriginalErrorMessage", string.Format("Error: {0}", context.Error.Message));
                         context.ClearError();
                     }
-                }
-            }
+                //}
+            //}
         }
 
         private bool IsManifestAssetFileExtension(string fileExtension)
@@ -67,21 +69,23 @@ namespace EPiPugPigConnector.HttpModules.MissingResources
 
         void context_EndRequest(object sender, EventArgs e)
         {
-            //returns 200 instead of errors on files reqeusted by .html pages.
-            //To prevent offline manifest creation from failing (one single asset file failing and the offline manifest
-            //download proccess is stopped.
+            //Returns 200 instead of errors on files reqeusted by offline dowloading function.
+            //Prevents offline manifest downloading from failing (one single asset file failing and the offline manifest download proccess is stopped).
             var httpApplication = (HttpApplication)sender;
             var context = httpApplication.Context;
 
-            if (httpApplication.Request.RawUrl.ToLower().EndsWith(".html"))
-            { 
+            string fileExtension = context.Request.CurrentExecutionFilePathExtension;
+            bool isHtmlExtension = httpApplication.Request.RawUrl.ToLower().EndsWith(".html"); //handles missing html files as well
+
+            //if (IsManifestAssetFileExtension(fileExtension) || isHtmlExtension)
+            //{ 
                 if (context.Response.StatusCode == 404 || context.Response.StatusCode == 500)
                 {
                     context.Response.Clear();
                     context.Response.StatusCode = 200;
                     context.Response.AddHeader("OfflineManifestErrorOverride_OriginalStatusCode", string.Format("StatusCode: {0}", context.Response.StatusCode));
                 }
-            }
+            //}
         }
 
         void context_PostRequestHandlerExecute(object sender, EventArgs e)
