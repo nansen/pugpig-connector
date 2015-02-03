@@ -89,6 +89,7 @@ namespace EPiPugPigConnector.Tests
         private string RemoveUnwantedCharacters(string resultString)
         {
             //todo: remove ' " and such chars from string
+            throw new NotImplementedException();
             
         }
 
