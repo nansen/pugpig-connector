@@ -4,6 +4,7 @@ using EPiPugPigConnector.Controllers;
 using EPiPugPigConnector.Editions.Factories;
 using EPiPugPigConnector.Editions.Models.Pages;
 using EPiPugPigConnector.Editions.Models.Pages.Helpers;
+using EPiPugPigConnector.Logging;
 using EPiServer;
 using EPiServer.DataAbstraction;
 using EPiServer.Web.Routing;
@@ -36,7 +37,10 @@ namespace EPiPugPigConnector.Editions
 
             if (containerPage == null && !editionEntries.Any())
             {
-                throw new NullReferenceException("The editions container page or editions childpages was not found/not published.");
+                string errorMessage = "The editions container page or editions childpages was not found/not published.";
+                LogHelper.Log(errorMessage);
+                throw new NullReferenceException(errorMessage);
+                return errorMessage;
             }
 
             return EditionsXmlFactory.GenerateXmlFrom(containerPage.ContentLink, containerPage, editionEntries);
