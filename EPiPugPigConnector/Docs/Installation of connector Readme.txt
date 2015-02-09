@@ -54,3 +54,7 @@ More info: http://weblog.west-wind.com/posts/2012/Oct/25/Caveats-with-the-runAll
 * Create a Edition Page template and add values to props.
 * There must be some sort of content pages published below the Edition Page root.
 * Publish the editions and editions page to generate the OPDS feed. / offline manifest file.
+
+
+add .html to a "edition" type page to activate the manifest creation. (the manifest attribute gets added to the page html).
+add .manifest to a "edition" type page to generate a manifest from the html file.
