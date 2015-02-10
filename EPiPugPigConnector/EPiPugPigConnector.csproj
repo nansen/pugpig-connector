@@ -258,7 +258,7 @@
     <Content Include="Docs\Opds feed docs.txt" />
     <Content Include="Docs\Overview project urls.txt" />
     <Content Include="EPiExtensions\source.txt" />
-    <Content Include="Docs\Installation of connector Readme.txt" />
+    <Content Include="Docs\Readme.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
