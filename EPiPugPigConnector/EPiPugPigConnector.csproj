@@ -202,6 +202,7 @@
     <Compile Include="Editions\Models\Pages\Helpers\EditionHelper.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="EPiExtensions\PageUrlExtensions.cs" />
+    <Compile Include="HttpModules\Manifest\CssAssetProcessor.cs" />
     <Compile Include="HttpModules\Manifest\CustomHtmlStream.cs" />
     <Compile Include="HttpModules\Manifest\RelativeUrlHtmlProcessor.cs" />
     <Compile Include="HttpModules\Manifest\ManifestCreator.cs" />

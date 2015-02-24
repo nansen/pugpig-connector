@@ -40,19 +40,27 @@ namespace EPiPugPigConnector.Editions.Factories
 
         private static string GenerateRootAndFeedXml(IEditionFeedElement editionFeedData)
         {
-            //TODO: Object cache the xml creation here. 
+            var cacheType = PugPigCacheType.Feed;
+            string cacheKey = editionFeedData.FeedId;
+
+            if (PugPigCache.IsSet(cacheType, cacheKey))
+                return PugPigCache.Get(cacheType, cacheKey) as string;
+
 
             StopwatchTimer stopwatch = new StopwatchTimer();
 
             var rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
             var feedElement = CreateFeedXmlFrom(editionFeedData);
             var entryElements = CreateEntriesXmlFrom(editionFeedData);
-            
-            feedElement.Add(entryElements); 
+
+            feedElement.Add(entryElements);
             rootDocument.Add(feedElement); //adds the main feed with entries.
             XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
 
-            return XmlHelper.ForceXmlToUtf8Output(rootDocument);
+            var resultXml = XmlHelper.ForceXmlToUtf8Output(rootDocument);
+            PugPigCache.Set(cacheType, cacheKey, resultXml);
+
+            return resultXml;
         }
 
         /// <summary>
@@ -61,16 +69,16 @@ namespace EPiPugPigConnector.Editions.Factories
         private static XElement CreateFeedXmlFrom(IEditionFeedElement rootData)
         {
             var ns = XmlHelper.GetAtomXmlNameSpace();
-            var feedElement = new XElement(ns+"feed");
+            var feedElement = new XElement(ns + "feed");
 
-            var id = new XElement(ns+"id", rootData.FeedId);
+            var id = new XElement(ns + "id", rootData.FeedId);
             var link = XmlHelper.GetLinkElement(relValue: "self", typeValue: "application/atom+xml", hrefValue: rootData.FeedLink);
-            var title = new XElement(ns+"title", rootData.FeedTitle, new XAttribute("type", "text"));
-            var subtitle = new XElement(ns+"subtitle", rootData.FeedSubtitle, new XAttribute("type", "text"));
-            var author = new XElement(ns+"author",
-                new XElement(ns+"name", rootData.FeedAuthorName));
-            var updated = new XElement(ns+"updated", rootData.FeedUpdated);
-            
+            var title = new XElement(ns + "title", rootData.FeedTitle, new XAttribute("type", "text"));
+            var subtitle = new XElement(ns + "subtitle", rootData.FeedSubtitle, new XAttribute("type", "text"));
+            var author = new XElement(ns + "author",
+                new XElement(ns + "name", rootData.FeedAuthorName));
+            var updated = new XElement(ns + "updated", rootData.FeedUpdated);
+
             feedElement.Add(id, link, title, subtitle, author, updated);
             return feedElement;
         }
@@ -118,8 +126,8 @@ namespace EPiPugPigConnector.Editions.Factories
             // future function: this property and probably some other props connected to 
             // the opds xml feeds should be changable.
             string entryTitleValue = page.PageName;
-            string entrySummarTextValue = EPiServer.Core.Html.TextIndexer.StripHtml(page.GetPropertyValue("MainBody"), maxTextLengthToReturn:300);
-            
+            string entrySummarTextValue = EPiServer.Core.Html.TextIndexer.StripHtml(page.GetPropertyValue("MainBody"), maxTextLengthToReturn: 300);
+
             var data = new EditionEntryXmlElement
             {
                 EntryId = "PageEntryId-" + page.ContentLink.ID,

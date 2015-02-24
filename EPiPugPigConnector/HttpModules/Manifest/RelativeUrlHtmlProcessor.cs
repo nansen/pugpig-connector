@@ -53,6 +53,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             var anchorLinkUrls = GetAnchorLinkUrls(htmlDom);
 
             var imgUrls = GetUrlsFrom(htmlDom, "img", "src");
+            //var cssImageUrls = 
 
             results.Add(System.Environment.NewLine);
             results.Add("# CSS FILES:");
@@ -135,6 +136,14 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             resultList = resultList.Distinct().ToList(); //remove duplicates
             return resultList;
         }
+
+
+        #region Get accessts from css flies (needs to be refactored to live elsewhere!)
+        private List<string> GetUrlsFromCssFiles(List<string> cssFiles)
+        {
+            return new List<string>();
+        }
+        #endregion
 
         //private string GetPageRelativeUrl(string inputUrl)
         //{
