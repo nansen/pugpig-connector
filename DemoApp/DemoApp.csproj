@@ -571,7 +571,9 @@
     <Content Include="modules\_protected\CMS\web.config" />
     <Content Include="modules\_protected\CMS\EPiServer.Cms.Shell.UI.zip" />
     <Content Include="License.config" />
+    <None Include="Properties\PublishProfiles\epipugpigdemo - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\epipugpigdemo - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\epipugpigdemo - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\epipugpigdemo - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\epipugpigdemo.pubxml" />
     <Content Include="Static\everything-offline.manifest" />

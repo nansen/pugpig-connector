@@ -52,14 +52,18 @@ namespace EPiPugPigConnector.Tests
 
             var serverMock = new Mock<HttpServerUtilityBase>(MockBehavior.Loose);
             serverMock.Setup(i => i.MapPath(It.IsAny<String>()))
-               .Returns((String a) => a.Replace("~/", @"C:\Projects\pugpig-connector\DemoApp\").Replace("/", @"\"));  //TODO: place folder in appSettings for shared dev env.
+               .Returns((String a) => a.Replace("~/", @"http://pugpig.local/").Replace(@"\", "/"));  //TODO: place folder in appSettings for shared dev env.
 
             var manifestFilePath = serverMock.Object.MapPath("~/editions-root-page/alloy-demo/alloy-meet/");
+            var projectDir = TestHelper.GetTestProjectDir().FullName;
+            var abslouteCssFilePath = cssFile.FullName;
+            abslouteCssFilePath = abslouteCssFilePath.Replace(projectDir, "~").Replace(@"\", "/");
+            abslouteCssFilePath = serverMock.Object.MapPath(abslouteCssFilePath);
 
-           if (cssFile.Exists)
+            if (cssFile.Exists)
             {
                 //Act 
-                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, cssFile.FullName);
+                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, abslouteCssFilePath, cssFile.FullName);
                 parsedLines = cssAssetProcessor.ProcessCssFile();
             }
 

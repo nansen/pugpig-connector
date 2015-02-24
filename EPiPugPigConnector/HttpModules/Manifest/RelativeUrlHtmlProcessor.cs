@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using CsQuery;
 using CsQuery.ExtensionMethods;
@@ -146,11 +147,12 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         {
             var cssAssets = new List<string>();
 
-            var manifestFilePath = HttpContext.Current.Server.MapPath(currentUri.AbsolutePath);
+            var manifestFilePath = HtmlHelper.GetAbslouteUrl(""); //currentUri.ToString();
             foreach (var cssFile in cssFiles)
             {
-                var cssFilePath = HttpContext.Current.Server.MapPath(string.Format("~/{0}", cssFile));
-                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, cssFilePath);
+                var abslouteCssFilePath = HtmlHelper.GetAbslouteUrl(cssFile);
+                var phyisicalCssFilePath = HttpContext.Current.Server.MapPath(cssFile);
+                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, abslouteCssFilePath, phyisicalCssFilePath);
                 var relativeAsset = cssAssetProcessor.ProcessCssFile();
 
                 cssAssets.AddRange(relativeAsset);

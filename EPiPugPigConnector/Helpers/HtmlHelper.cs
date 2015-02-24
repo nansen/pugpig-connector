@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using EPiPugPigConnector.EPiExtensions;
 using EPiServer;
 using EPiServer.Core;
@@ -95,6 +96,11 @@ namespace EPiPugPigConnector.Helpers
                 inputUrl = String.Format("{0}.{1}", inputUrl, extension);
             }
             return inputUrl;
+        }
+
+        public static string GetAbslouteUrl(string relativeUrl)
+        {
+            return string.Format("http://{0}{1}", HttpContext.Current.Request.Url.Host, relativeUrl);
         }
     }
 }

@@ -13,11 +13,13 @@ namespace EPiPugPigConnector.HttpModules.Manifest
     {
         private readonly string _manifestFilePath;
         private readonly string _cssFilePath;
+        private string _cssVirtualPath;
 
-        public CssAssetProcessor(string manifestFilePath, string cssFilePath)
+        public CssAssetProcessor(string manifestVirtualPath, string cssVirtualPath, string cssFilePath)
         {
-            _manifestFilePath = manifestFilePath;
+            _manifestFilePath = manifestVirtualPath;
             _cssFilePath = cssFilePath;
+            _cssVirtualPath = cssVirtualPath;
         }
 
         public List<string> ProcessCssFile()
@@ -26,7 +28,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             List<string> parsedLines = new List<string>();
 
             linesToParse = FindImageAssetsLinesInCssFile(_cssFilePath);
-            parsedLines = ConvertImageAssetLinesToRelativeUrls(linesToParse, _cssFilePath, _manifestFilePath);
+            parsedLines = ConvertImageAssetLinesToRelativeUrls(linesToParse, _cssVirtualPath, _manifestFilePath);
 
             return parsedLines;
         }
@@ -73,13 +75,13 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         private string ConvertCssRelativeToManifestRelativeString(string resultString, string cssFile, string manifestFilePath)
         {
             var baseUri = new Uri(manifestFilePath);
-            var cssFilePath = cssFile.Remove(cssFile.LastIndexOf('\\'));
-            cssFilePath = string.Format("{0}\\", cssFilePath);
+            var cssFilePath = cssFile.Remove(cssFile.LastIndexOf('/'));
+            cssFilePath = string.Format("{0}/", cssFilePath);
 
             var assetUri = new Uri(string.Format("{0}{1}", cssFilePath, resultString));
-            var relativeUrl = baseUri.MakeRelativeUri(assetUri);
+            var relativeUrl = string.Format("/{0}",baseUri.MakeRelativeUri(assetUri));
 
-            return relativeUrl.ToString();
+            return relativeUrl;
         }
 
         private string RemoveUnwantedCharacters(string originalString)
