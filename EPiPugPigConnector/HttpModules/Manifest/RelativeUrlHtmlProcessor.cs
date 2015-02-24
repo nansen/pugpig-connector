@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using CsQuery;
 using CsQuery.ExtensionMethods;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Licensing.Services;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
@@ -53,7 +55,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             var anchorLinkUrls = GetAnchorLinkUrls(htmlDom);
 
             var imgUrls = GetUrlsFrom(htmlDom, "img", "src");
-            //var cssImageUrls = 
+            var cssImageUrls = GetUrlsFromCssFiles(cssLinkUrls);
 
             results.Add(System.Environment.NewLine);
             results.Add("# CSS FILES:");
@@ -70,6 +72,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             results.Add(System.Environment.NewLine);
             results.Add("# IMAGE FILES:");
             results.AddRange(imgUrls);
+            results.AddRange(cssImageUrls);
             results.Add(System.Environment.NewLine);
             
             return results;
@@ -141,7 +144,19 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         #region Get accessts from css flies (needs to be refactored to live elsewhere!)
         private List<string> GetUrlsFromCssFiles(List<string> cssFiles)
         {
-            return new List<string>();
+            var cssAssets = new List<string>();
+
+            var manifestFilePath = HttpContext.Current.Server.MapPath(currentUri.AbsolutePath);
+            foreach (var cssFile in cssFiles)
+            {
+                var cssFilePath = HttpContext.Current.Server.MapPath(string.Format("~/{0}", cssFile));
+                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, cssFilePath);
+                var relativeAsset = cssAssetProcessor.ProcessCssFile();
+
+                cssAssets.AddRange(relativeAsset);
+            }
+            
+            return cssAssets;
         }
         #endregion
 

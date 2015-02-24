@@ -35,8 +35,8 @@ namespace EPiPugPigConnector.Tests
 
             if (cssFile.Exists)
             {
-                //Act    
-                linesToParse = FindImageAssetsLinesInCssFile(cssFile);
+                //Act
+                linesToParse = CssAssetProcessor.FindImageAssetsLinesInCssFile(cssFile.FullName);
             }
 
             //Assert
@@ -48,8 +48,8 @@ namespace EPiPugPigConnector.Tests
         {
             //Arrange
             var cssFile = GetTestCssFile();
-            List<string> linesToParse = new List<string>();
             List<string> parsedLines = new List<string>();
+
             var serverMock = new Mock<HttpServerUtilityBase>(MockBehavior.Loose);
             serverMock.Setup(i => i.MapPath(It.IsAny<String>()))
                .Returns((String a) => a.Replace("~/", @"C:\Projects\pugpig-connector\DemoApp\").Replace("/", @"\"));  //TODO: place folder in appSettings for shared dev env.
@@ -58,90 +58,16 @@ namespace EPiPugPigConnector.Tests
 
            if (cssFile.Exists)
             {
-                //Act    
-                linesToParse = FindImageAssetsLinesInCssFile(cssFile);
-                parsedLines = ConvertImageAssetLinesToRelativeUrls(linesToParse, cssFile, manifestFilePath);
+                //Act 
+                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, cssFile.FullName);
+                parsedLines = cssAssetProcessor.ProcessCssFile();
             }
 
             //Assert
             Assert.IsTrue(parsedLines.Count > 0);
         }
 
-        private List<string> ConvertImageAssetLinesToRelativeUrls(List<string> linesToParse, FileInfo cssFile, string manifestFilePath)
-        {
-            var resultList = new List<string>();
-            foreach (var line in linesToParse)
-            {
-                string resultString = ParseUrlSegmentFrom(line);
-                resultString = RemoveUnwantedCharacters(resultString);
-                resultString = ConvertCssRelativeToManifestRelativeString(resultString, cssFile, manifestFilePath);
-
-                if (resultString.IsNotNullOrEmpty())
-                {
-                    resultList.Add(resultString);
-                }
-            }
-            return resultList;
-        }
-
-        private string ConvertCssRelativeToManifestRelativeString(string resultString, FileInfo cssFile, string manifestFilePath)
-        {
-            string url = "http://pugpig.local";
-            var baseUri = new Uri(manifestFilePath);
-            var cssFilePath = cssFile.Directory.FullName;
-            var assetUri = new Uri(string.Format("{0}{1}", cssFilePath, resultString));
-
-            var relativeUrl = baseUri.MakeRelativeUri(assetUri);
-            
-            //todo: the css file is always relative to Server.MapPath("~").
-            // use this fact to convert ../../ to manifest relative. e.g. /fkdskjfas/jfkdsja/image.png
-            //ps. in this testingcontext we have no http context so we must fake the server mappath(~) in here.
-            // use moq etc?
-
-            return relativeUrl.ToString();
-        }
-
-        private string RemoveUnwantedCharacters(string originalString)
-        {
-
-            //todo: remove ' " and such chars from string
-            var filteredString = originalString;
-            char[] invalidChars = { '\'', '\"' };
-
-            foreach (var invalidChar in invalidChars)
-            {
-                filteredString = filteredString.Replace(invalidChar.ToString(), "");
-            }
-
-            return filteredString;
-        }
-
-        private string ParseUrlSegmentFrom(string line)
-        {
-            string result = null;
-
-            //remove all text but text inside the first ( )
-            if (IsValidUrlSegment(line))
-            {
-                int leftPos = line.IndexOf('(') + 1;
-                int rightPos = line.IndexOf(')');
-                int stringLength = rightPos - leftPos;
-
-                if (stringLength > 0 && (line.Length >= leftPos+stringLength))
-                {
-                    result = line.Substring(leftPos, stringLength);
-                }
-            }
-            return result;
-        }
-
-        private bool IsValidUrlSegment(string line)
-        {
-            //must contain both a ( and a ) char.
-            if ((line.IndexOf("(") > 0) && (line.IndexOf(")") > 0))
-                return true;
-            return false;
-        }
+        
 
         private static FileInfo GetTestCssFile()
         {
@@ -150,24 +76,7 @@ namespace EPiPugPigConnector.Tests
             return cssFile;
         }
 
-        private List<string> FindImageAssetsLinesInCssFile(FileInfo cssFile)
-        {
-            List<string> resultLines = new List<string>();
-
-            // Open the stream and read it back. 
-            using (StreamReader sr = File.OpenText(cssFile.FullName))
-            {
-                string line = String.Empty;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (line.ToLower().Contains("url"))
-                    {
-                        resultLines.Add(line);
-                    }
-                }
-            }
-            return resultLines;
-        }
+        
 
         //[TestMethod]
         //public void Test_Find_Assets_In_Css()
