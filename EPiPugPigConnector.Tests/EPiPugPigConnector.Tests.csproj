@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\ManifestAssets\Static\css\TestImageAssetsParsing.css" />
+    <Content Include="TestFiles\ManifestAssets\Static\css\TestImageAssetsParsingFromBundle.css" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

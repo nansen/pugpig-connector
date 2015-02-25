@@ -198,7 +198,6 @@
     <Compile Include="WebClients\IWebClient.cs" />
     <Compile Include="ExtensionMethods\EnumExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
-    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
     <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Helpers\UrlHelper.cs" />

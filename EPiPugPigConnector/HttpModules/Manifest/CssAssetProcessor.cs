@@ -37,6 +37,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         public static List<string> FindImageAssetsLinesInCssFile(IWebClient webClient, string cssVirtualPath)
         {
             List<string> resultLines = new List<string>();
+            List<string> allLines = new List<string>();
 
             var cssFileByteArray = webClient.DownloadData(new Uri(cssVirtualPath));
             var stream = new MemoryStream(cssFileByteArray);
@@ -47,12 +48,29 @@ namespace EPiPugPigConnector.HttpModules.Manifest
                 string line = String.Empty;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (line.ToLower().Contains("url"))
+                    string[] stringSeparators = new string[] { "url" };
+                    allLines.AddRange(line.Split(stringSeparators, StringSplitOptions.None));
+                }
+            }
+
+            foreach (var line in allLines)
+            {
+                if (line.ToLower().Contains(")"))
+                {
+                    try
                     {
-                        resultLines.Add(line);
+                        var url = line.Remove(line.IndexOf(')') + 1, line.Length - line.IndexOf(')') - 1);
+                        //url = url.Remove(url.IndexOf(")"), url.IndexOf(")") +1 -);
+                        resultLines.Add(url);
+                    }
+                    catch (Exception)
+                    {
+                        // Not an asset url so continue to the next line.
+                        continue;
                     }
                 }
             }
+
             return resultLines;
         }
 
@@ -66,7 +84,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
                     continue;
 
                 resultString = RemoveUnwantedCharacters(resultString);
-                resultString = ConvertCssRelativeToManifestRelativeString(resultString, cssFile, manifestFilePath);
+                //resultString = ConvertCssRelativeToManifestRelativeString(resultString, cssFile, manifestFilePath);
 
                 if (resultString.IsNotNullOrEmpty())
                 {
@@ -125,7 +143,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         private bool IsValidUrlSegment(string line)
         {
             //must contain both a ( and a ) char.
-            if ((line.IndexOf("(") > 0) && (line.IndexOf(")") > 0))
+            if ((line.IndexOf("(") == 0) && (line.IndexOf(")") > 0))
                 return true;
             return false;
         }

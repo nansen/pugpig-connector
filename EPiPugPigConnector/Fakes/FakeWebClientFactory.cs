@@ -29,7 +29,7 @@ namespace EPiPugPigConnector.Fakes
         public byte[] DownloadData(Uri address)
         {
             // TODO: Hard coded to this file for now - Refactor to take any file.
-            var cssFilePath = BaseUrl + @"\\TestFiles\\ManifestAssets\\Static\\css\\TestImageAssetsParsing.css";
+            var cssFilePath = BaseUrl + @"\\TestFiles\\ManifestAssets\\Static\\css\\TestImageAssetsParsingFromBundle.css";
             
             //string cssFilePath = ;
             FileInfo cssFile = new FileInfo(cssFilePath);
