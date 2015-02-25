@@ -40,13 +40,6 @@ namespace EPiPugPigConnector.Editions.Factories
 
         private static string GenerateRootAndFeedXml(IEditionFeedElement editionFeedData)
         {
-            var cacheType = PugPigCacheType.Feed;
-            string cacheKey = editionFeedData.FeedId;
-
-            if (PugPigCache.IsSet(cacheType, cacheKey))
-                return PugPigCache.Get(cacheType, cacheKey) as string;
-
-
             StopwatchTimer stopwatch = new StopwatchTimer();
 
             var rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
@@ -58,8 +51,7 @@ namespace EPiPugPigConnector.Editions.Factories
             XmlHelper.AddElapsedTimeComment(stopwatch, rootDocument);
 
             var resultXml = XmlHelper.ForceXmlToUtf8Output(rootDocument);
-            PugPigCache.Set(cacheType, cacheKey, resultXml);
-
+            
             return resultXml;
         }
 
