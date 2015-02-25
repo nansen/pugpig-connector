@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using EPiPugPigConnector.Caching;
+using EPiPugPigConnector.WebClients;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
@@ -10,14 +11,16 @@ namespace EPiPugPigConnector.HttpModules.Manifest
     {
         private readonly Stream filter;
         private System.Uri currentRequestUri;
+        private readonly IWebClient _webClient;
         private readonly MemoryStream cacheStream = new MemoryStream();
 
         public bool HasError { get; set; }
 
-        public CustomHtmlStream(Stream filter, System.Uri currentRequestUri)
+        public CustomHtmlStream(Stream filter, System.Uri currentRequestUri, IWebClient webClient)
         {
             this.filter = filter;
             this.currentRequestUri = currentRequestUri;
+            _webClient = webClient;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -55,7 +58,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             else
             {
                 //Create manifest output here.
-                var htmlProcessor = new RelativeUrlHtmlProcessor(currentRequestUri);
+                var htmlProcessor = new RelativeUrlHtmlProcessor(_webClient);
                 htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
                 
                 //Add to cache

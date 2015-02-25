@@ -14,10 +14,12 @@ using EPiPugPigConnector.Editions.Factories;
 using EPiPugPigConnector.Editions.Interfaces.Edition;
 using EPiPugPigConnector.Editions.Interfaces.Editions;
 using EPiPugPigConnector.ExtensionMethods;
+using EPiPugPigConnector.Fakes;
 using EPiPugPigConnector.Fakes.Pages;
 using EPiPugPigConnector.HttpModules.Manifest;
 using EPiPugPigConnector.Tests.TestUtilities;
 using EPiPugPigConnector.Utils;
+using EPiPugPigConnector.WebClients;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -31,12 +33,22 @@ namespace EPiPugPigConnector.Tests
         {
             //Arrange
             var cssFile = GetTestCssFile();
+            var serverMock = new Mock<HttpServerUtilityBase>(MockBehavior.Loose);
+            serverMock.Setup(i => i.MapPath(It.IsAny<String>()))
+               .Returns((String a) => a.Replace("~/", @"http://pugpig.local/").Replace(@"\", "/"));  //TODO: place folder in appSettings for shared dev env.
+
+            var projectDir = TestHelper.GetTestProjectDir().FullName;
+            var abslouteCssFilePath = cssFile.FullName;
+            abslouteCssFilePath = abslouteCssFilePath.Replace(projectDir, "~").Replace(@"\", "/");
+            abslouteCssFilePath = serverMock.Object.MapPath(abslouteCssFilePath);
+
+            IWebClient webClient = new FakeWebClientFactory().Create(TestHelper.GetTestProjectDir().FullName);
             List<string> linesToParse = new List<string>();
 
             if (cssFile.Exists)
             {
                 //Act
-                linesToParse = CssAssetProcessor.FindImageAssetsLinesInCssFile(cssFile.FullName);
+                linesToParse = CssAssetProcessor.FindImageAssetsLinesInCssFile(webClient, abslouteCssFilePath);
             }
 
             //Assert
@@ -54,16 +66,18 @@ namespace EPiPugPigConnector.Tests
             serverMock.Setup(i => i.MapPath(It.IsAny<String>()))
                .Returns((String a) => a.Replace("~/", @"http://pugpig.local/").Replace(@"\", "/"));  //TODO: place folder in appSettings for shared dev env.
 
-            var manifestFilePath = serverMock.Object.MapPath("~/editions-root-page/alloy-demo/alloy-meet/");
+            var manifestFilePath = serverMock.Object.MapPath("~/");
             var projectDir = TestHelper.GetTestProjectDir().FullName;
             var abslouteCssFilePath = cssFile.FullName;
             abslouteCssFilePath = abslouteCssFilePath.Replace(projectDir, "~").Replace(@"\", "/");
             abslouteCssFilePath = serverMock.Object.MapPath(abslouteCssFilePath);
 
+            IWebClient webClient = new FakeWebClientFactory().Create(TestHelper.GetTestProjectDir().FullName);
+
             if (cssFile.Exists)
             {
                 //Act 
-                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, abslouteCssFilePath, cssFile.FullName);
+                var cssAssetProcessor = new CssAssetProcessor(webClient, manifestFilePath, abslouteCssFilePath);
                 parsedLines = cssAssetProcessor.ProcessCssFile();
             }
 

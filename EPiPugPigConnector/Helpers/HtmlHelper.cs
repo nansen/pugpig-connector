@@ -97,10 +97,5 @@ namespace EPiPugPigConnector.Helpers
             }
             return inputUrl;
         }
-
-        public static string GetAbslouteUrl(string relativeUrl)
-        {
-            return string.Format("http://{0}{1}", HttpContext.Current.Request.Url.Host, relativeUrl);
-        }
     }
 }

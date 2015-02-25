@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Castle.Core.Internal;
 using EPiPugPigConnector.ExtensionMethods;
+using EPiPugPigConnector.WebClients;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
@@ -12,14 +13,14 @@ namespace EPiPugPigConnector.HttpModules.Manifest
     public class CssAssetProcessor
     {
         private readonly string _manifestFilePath;
-        private readonly string _cssFilePath;
-        private string _cssVirtualPath;
+        private readonly IWebClient _webClient;
+        private readonly string _cssVirtualPath;
 
-        public CssAssetProcessor(string manifestVirtualPath, string cssVirtualPath, string cssFilePath)
+        public CssAssetProcessor(IWebClient webClient, string manifestVirtualPath, string cssVirtualPath)
         {
             _manifestFilePath = manifestVirtualPath;
-            _cssFilePath = cssFilePath;
             _cssVirtualPath = cssVirtualPath;
+            _webClient = webClient;
         }
 
         public List<string> ProcessCssFile()
@@ -27,18 +28,21 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             List<string> linesToParse = new List<string>();
             List<string> parsedLines = new List<string>();
 
-            linesToParse = FindImageAssetsLinesInCssFile(_cssFilePath);
+            linesToParse = FindImageAssetsLinesInCssFile(_webClient, _cssVirtualPath);
             parsedLines = ConvertImageAssetLinesToRelativeUrls(linesToParse, _cssVirtualPath, _manifestFilePath);
 
             return parsedLines;
         }
 
-        public static List<string> FindImageAssetsLinesInCssFile(string cssFile)
+        public static List<string> FindImageAssetsLinesInCssFile(IWebClient webClient, string cssVirtualPath)
         {
             List<string> resultLines = new List<string>();
 
+            var cssFileByteArray = webClient.DownloadData(new Uri(cssVirtualPath));
+            var stream = new MemoryStream(cssFileByteArray);
+
             // Open the stream and read it back. 
-            using (StreamReader sr = File.OpenText(cssFile))
+            using (StreamReader sr = new StreamReader(stream))
             {
                 string line = String.Empty;
                 while ((line = sr.ReadLine()) != null)
@@ -79,9 +83,9 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             cssFilePath = string.Format("{0}/", cssFilePath);
 
             var assetUri = new Uri(string.Format("{0}{1}", cssFilePath, resultString));
-            var relativeUrl = string.Format("/{0}",baseUri.MakeRelativeUri(assetUri));
+            var relativeUrl = baseUri.MakeRelativeUri(assetUri);
 
-            return relativeUrl;
+            return relativeUrl.ToString();
         }
 
         private string RemoveUnwantedCharacters(string originalString)

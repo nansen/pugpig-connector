@@ -17,5 +17,10 @@ namespace EPiPugPigConnector.Helpers
 
             return rootUrl;
         }
+
+        public static string GetAbslouteUrl(string relativeUrl)
+        {
+            return string.Format("{0}/{1}", GetCurrentDomainRootUrl(), relativeUrl);
+        }
     }
 }

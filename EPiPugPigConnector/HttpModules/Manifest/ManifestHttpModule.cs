@@ -1,10 +1,20 @@
 ﻿using System;
 using System.Web;
+using EPiPugPigConnector.WebClients;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
 {
     class ManifestHttpModule : IHttpModule
     {
+        private readonly IWebClient _webClient;
+
+        public ManifestHttpModule()
+        {
+            //TODO: Should look to inject this dependancy
+            _webClient = new SystemWebClientFactory().Create();
+        }
+
+
         public void Init(HttpApplication context)
         {
             context.EndRequest += context_EndRequest;
@@ -18,7 +28,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             if (httpApplication.Request.RawUrl.ToLower().EndsWith(Constants.MANIFEST_FILE_EXTENSION))
             {
                 //Process current html page with CustomHtmlStream:
-                httpApplication.Response.Filter = new CustomHtmlStream(httpApplication.Response.Filter, httpApplication.Request.Url);
+                httpApplication.Response.Filter = new CustomHtmlStream(httpApplication.Response.Filter, httpApplication.Request.Url, _webClient);
                 
                 var context = httpApplication.Context;
                 context.Response.StatusCode = 200;

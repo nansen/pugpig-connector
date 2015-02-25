@@ -7,6 +7,7 @@ using CsQuery;
 using CsQuery.ExtensionMethods;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
+using EPiPugPigConnector.WebClients;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Licensing.Services;
@@ -15,11 +16,11 @@ namespace EPiPugPigConnector.HttpModules.Manifest
 {
     public class RelativeUrlHtmlProcessor
     {
-        private Uri currentUri;
+        private IWebClient _webClient;
 
-        public RelativeUrlHtmlProcessor(Uri currentUri)
+        public RelativeUrlHtmlProcessor(IWebClient webClient)
         {
-            this.currentUri = currentUri;
+            _webClient = webClient;
         }
 
         public string ProcessHtml(string htmlDocument)
@@ -147,12 +148,12 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         {
             var cssAssets = new List<string>();
 
-            var manifestFilePath = HtmlHelper.GetAbslouteUrl(""); //currentUri.ToString();
+            var manifestFilePath = UrlHelper.GetAbslouteUrl(""); //currentUri.ToString();
             foreach (var cssFile in cssFiles)
             {
-                var abslouteCssFilePath = HtmlHelper.GetAbslouteUrl(cssFile);
-                var phyisicalCssFilePath = HttpContext.Current.Server.MapPath(cssFile);
-                var cssAssetProcessor = new CssAssetProcessor(manifestFilePath, abslouteCssFilePath, phyisicalCssFilePath);
+                var abslouteCssFilePath = UrlHelper.GetAbslouteUrl(cssFile);
+
+                var cssAssetProcessor = new CssAssetProcessor(_webClient, manifestFilePath, abslouteCssFilePath);
                 var relativeAsset = cssAssetProcessor.ProcessCssFile();
 
                 cssAssets.AddRange(relativeAsset);
@@ -202,5 +203,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         //    }
         //    return resultPrefix;
         //}
+
+
     }
 }
