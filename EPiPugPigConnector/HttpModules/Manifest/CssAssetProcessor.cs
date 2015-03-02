@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Castle.Core.Internal;
 using EPiPugPigConnector.ExtensionMethods;
+using EPiPugPigConnector.Helpers;
 using EPiPugPigConnector.WebClients;
 
 namespace EPiPugPigConnector.HttpModules.Manifest
@@ -84,7 +85,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
                     continue;
 
                 resultString = RemoveUnwantedCharacters(resultString);
-                //resultString = ConvertCssRelativeToManifestRelativeString(resultString, cssFile, manifestFilePath);
+                resultString = ConvertCssRelativeToManifestRelativeString(resultString, cssFile, manifestFilePath);
 
                 if (resultString.IsNotNullOrEmpty())
                 {
@@ -94,16 +95,15 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             return resultList;
         }
 
-        private string ConvertCssRelativeToManifestRelativeString(string resultString, string cssFile, string manifestFilePath)
+        private string ConvertCssRelativeToManifestRelativeString(string resultString, string cssFile, string manifestUri)
         {
-            var baseUri = new Uri(manifestFilePath);
             var cssFilePath = cssFile.Remove(cssFile.LastIndexOf('/'));
             cssFilePath = string.Format("{0}/", cssFilePath);
 
             var assetUri = new Uri(string.Format("{0}{1}", cssFilePath, resultString));
-            var relativeUrl = baseUri.MakeRelativeUri(assetUri);
+            var relativeUrl = UrlHelper.GetRelativeUrl(manifestUri, assetUri.ToString());
 
-            return relativeUrl.ToString();
+            return relativeUrl;
         }
 
         private string RemoveUnwantedCharacters(string originalString)

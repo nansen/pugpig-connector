@@ -29,7 +29,7 @@ namespace DemoApp.Business.Initialization
                 .Include("~/Static/css/style.css", new CssRewriteUrlTransform())
                 .Include("~/Static/css/editmode.css"));
 
-            BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
         }
 
         public void Uninitialize(InitializationEngine context)

@@ -50,21 +50,21 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             string cacheKey = currentRequestUri.ToString(); //should map against page.GetFriendlyUrl(includeHost: true)
             var cacheType = PugPigCacheType.Manifest;
 
-            if (PugPigCache.IsSet(cacheType, cacheKey))
-            {
-                //Get from cache
-                return (string)PugPigCache.Get(cacheType, cacheKey);
-            }
-            else
-            {
+            //if (PugPigCache.IsSet(cacheType, cacheKey))
+            //{
+            //    //Get from cache
+            //    return (string)PugPigCache.Get(cacheType, cacheKey);
+            //}
+            //else
+            //{
                 //Create manifest output here.
-                var htmlProcessor = new RelativeUrlHtmlProcessor(_webClient);
+                var htmlProcessor = new RelativeUrlHtmlProcessor(_webClient, currentRequestUri);
                 htmlDocument = htmlProcessor.ProcessHtml(htmlDocument);
                 
                 //Add to cache
                 PugPigCache.Set(cacheType, cacheKey, htmlDocument);
                 return htmlDocument;
-            }
+            //}
         }
 
         public override long Seek(long offset, SeekOrigin origin)

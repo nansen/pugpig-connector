@@ -17,10 +17,12 @@ namespace EPiPugPigConnector.HttpModules.Manifest
     public class RelativeUrlHtmlProcessor
     {
         private IWebClient _webClient;
+        private Uri _currentUri;
 
-        public RelativeUrlHtmlProcessor(IWebClient webClient)
+        public RelativeUrlHtmlProcessor(IWebClient webClient, Uri currentUri)
         {
             _webClient = webClient;
+            _currentUri = currentUri;
         }
 
         public string ProcessHtml(string htmlDocument)
@@ -52,11 +54,11 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             string result = string.Empty;
             var results = new List<string>();
 
-            var cssLinkUrls = GetUrlsFrom(htmlDom, "link", "href");
-            var scriptUrls = GetUrlsFrom(htmlDom, "script", "src");
+            var cssLinkUrls = GetManifestRelativeUrlsFrom(htmlDom, "link", "href");
+            var scriptUrls = GetManifestRelativeUrlsFrom(htmlDom, "script", "src");
             var anchorLinkUrls = GetAnchorLinkUrls(htmlDom);
 
-            var imgUrls = GetUrlsFrom(htmlDom, "img", "src");
+            var imgUrls = GetManifestRelativeUrlsFrom(htmlDom, "img", "src");
             var cssImageUrls = GetUrlsFromCssFiles(cssLinkUrls);
 
             results.Add(System.Environment.NewLine);
@@ -122,6 +124,21 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             return links;
         }
 
+        private List<string> GetManifestRelativeUrlsFrom(CQ htmlDom, string elementName, string attributeName)
+        {
+            var urls = GetUrlsFrom(htmlDom, elementName, attributeName);
+            var manifestRelativeUrl = new List<string>();
+
+            foreach (var url in urls)
+            {
+                var abslouteUrl = UrlHelper.GetAbslouteUrl(url);
+                manifestRelativeUrl.Add(UrlHelper.GetRelativeUrl(_currentUri.ToString(), abslouteUrl));
+                //manifestRelativeUrl.Add(url);
+            }
+
+            return manifestRelativeUrl;
+        }
+
         /// <summary>
         /// Return attribute value from element
         /// </summary>
@@ -148,7 +165,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
         {
             var cssAssets = new List<string>();
 
-            var manifestFilePath = UrlHelper.GetAbslouteUrl(""); //currentUri.ToString();
+            var manifestFilePath = _currentUri.ToString();
             foreach (var cssFile in cssFiles)
             {
                 var abslouteCssFilePath = UrlHelper.GetAbslouteUrl(cssFile);

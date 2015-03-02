@@ -20,7 +20,18 @@ namespace EPiPugPigConnector.Helpers
 
         public static string GetAbslouteUrl(string relativeUrl)
         {
-            return string.Format("{0}/{1}", GetCurrentDomainRootUrl(), relativeUrl);
+            var modifiedUrl = relativeUrl.TrimStart('/');
+            return string.Format("{0}/{1}", GetCurrentDomainRootUrl(), modifiedUrl);
+        }
+        
+        public static string GetRelativeUrl(string baseUrl, string abslouteUrl)
+        {
+            var baseUri = new Uri(baseUrl);
+            var assetUri = new Uri(abslouteUrl);
+
+            var relativeUrl = baseUri.MakeRelativeUri(assetUri);
+
+            return relativeUrl.ToString();
         }
     }
 }

@@ -1,0 +1,27 @@
+2015-02-26 09:12:27,226 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 09:39:06,365 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.UpdateSubPageChanged - Page name Article With No Images id 187 updated change date to 2015-02-26T09:39:06.3650331+00:00
+2015-02-26 09:39:07,156 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Edition1 id 165 updated change date to 2015-01-27T15:40:44.3830000
+2015-02-26 09:39:07,163 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 165 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 09:39:07,348 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Editions root page id 167 updated change date to 2015-02-02T16:59:51.8330000
+2015-02-26 09:39:07,353 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 167 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 09:39:07,359 DEBUG EPiPugPigConnector.Caching.PugPigCache.InvalidateFeedCache - Feed xml cache invalidated, cachekey: PUGPIG_FEED_167
+2015-02-26 09:40:05,386 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.UpdateSubPageChanged - Page name Article With No Images id 187 updated change date to 2015-02-26T09:40:05.3862135+00:00
+2015-02-26 09:40:05,755 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Edition1 id 165 updated change date to 2015-02-26T09:39:07.0230000
+2015-02-26 09:40:05,768 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 165 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 09:40:05,930 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Editions root page id 167 updated change date to 2015-02-26T09:39:07.2570000
+2015-02-26 09:40:05,934 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 167 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 09:40:05,939 DEBUG EPiPugPigConnector.Caching.PugPigCache.InvalidateFeedCache - Feed xml cache invalidated, cachekey: PUGPIG_FEED_167
+2015-02-26 10:09:45,484 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 10:11:08,438 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 10:15:07,246 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 10:16:01,453 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 10:35:53,434 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Editions root page id 167 updated change date to 2015-02-26T09:40:05.8470000
+2015-02-26 10:35:53,443 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 167 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 10:35:53,452 DEBUG EPiPugPigConnector.Caching.PugPigCache.InvalidateFeedCache - Feed xml cache invalidated, cachekey: PUGPIG_FEED_167
+2015-02-26 10:36:29,997 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.UpdateSubPageChanged - Page name Empty page id 189 updated change date to 2015-02-26T10:36:29.9975099+00:00
+2015-02-26 10:36:30,305 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Edition 3 id 188 updated change date to 2015-02-26T10:35:53.0430000
+2015-02-26 10:36:30,309 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 188 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 10:36:30,455 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.LogPageChanged - Page name Editions root page id 167 updated change date to 2015-02-26T10:35:53.3370000
+2015-02-26 10:36:30,469 ERROR EPiPugPigConnector.PageEvents.PugPigPageEventsHandler.SetChangedDate - Page id 167 was removed from episerver cache after SaveAction.ForceCurrentVersion
+2015-02-26 11:09:44,635 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started
+2015-02-26 11:56:25,467 DEBUG System.RuntimeMethodHandle.InvokeMethod - Pugpig connector logger started

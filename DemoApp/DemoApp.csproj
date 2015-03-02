@@ -483,6 +483,7 @@
     <Content Include="Static\gfx\searchbuttonsmall.png" />
     <Content Include="Static\gfx\track.jpg" />
     <Content Include="Static\html\error.htm" />
+    <Content Include="Static\img\pugpig-not-working-glyphicons-halflings-rename.png" />
     <Content Include="Static\img\pugpig-working-glyphicons-halflings.png" />
     <Content Include="Static\img\glyphicons-halflings-white.png" />
     <Content Include="Static\img\glyphicons-halflings.png" />

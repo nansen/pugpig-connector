@@ -46,7 +46,7 @@ namespace EPiPugPigConnector.Editions.Factories
         private static string GenerateResultXml(IEditionsFeedElement editionsFeedData, IEnumerable<IEditionsEntryElement> editionEntriesData,
             bool includeGeneratedTimeComment)
         {
-//create the xml
+            //create the xml
             var stopwatch = new StopwatchTimer();
 
             XDocument rootDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));

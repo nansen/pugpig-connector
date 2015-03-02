@@ -30,15 +30,15 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             StringBuilder strb = new StringBuilder();
             strb.Append("CACHE MANIFEST" + Environment.NewLine);
             strb.AppendFormat("# This file was generated at {0}" + Environment.NewLine, DateTime.Now.ToString("o"));
-            strb.Append("CACHE:" + Environment.NewLine);
-
+            strb.Append("#CACHE:" + Environment.NewLine);
+            
             foreach (string filePath in offlineUrlsList)
             {
                 strb.AppendFormat(String.Format("{0}" + Environment.NewLine, filePath));
             }
 
-            strb.Append("NETWORK:" + Environment.NewLine);
-            strb.Append("*" + Environment.NewLine);
+            strb.Append("#NETWORK:" + Environment.NewLine);
+            strb.Append("#*" + Environment.NewLine);
 
             return strb.ToString();
         }

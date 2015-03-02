@@ -99,10 +99,12 @@ namespace EPiPugPigConnector.Editions.Factories
         {
             var ns = XmlHelper.GetAtomXmlNameSpace();
             var entryElement = new XElement(ns + "entry");
+            var relativeEntryHtmlLink = UrlHelper.GetRelativeUrl(UrlHelper.GetCurrentDomainRootUrl(), entryData.EntryHtmlLink);
+            var relativeEntryManifestLink = UrlHelper.GetRelativeUrl(UrlHelper.GetCurrentDomainRootUrl(), entryData.EntryManifestLink);
 
             var id = new XElement(ns + "id", entryData.EntryId);
-            var alternateLink = XmlHelper.GetLinkElement(relValue: "alternate", typeValue: "text/html", hrefValue: entryData.EntryHtmlLink);
-            var relatedLink = XmlHelper.GetLinkElement(relValue: "related", typeValue: "text/cache-manifest", hrefValue: entryData.EntryManifestLink);
+            var alternateLink = XmlHelper.GetLinkElement(relValue: "alternate", typeValue: "text/html", hrefValue: relativeEntryHtmlLink);
+            var relatedLink = XmlHelper.GetLinkElement(relValue: "related", typeValue: "text/cache-manifest", hrefValue: relativeEntryManifestLink);
             var title = new XElement(ns + "title", entryData.EntryTitle, new XAttribute("type", "text"));
             var summary = new XElement(ns + "summary", entryData.EntrySummary, new XAttribute("type", "text"));
             var updated = new XElement(ns + "updated", entryData.EntryUpdated);
