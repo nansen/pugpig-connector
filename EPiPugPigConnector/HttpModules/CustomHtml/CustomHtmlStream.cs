@@ -66,6 +66,8 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
 
             ModifyHtmlWithRelativeAnchorLinkUrls(csQueryHtml);
             ModifyCssWithRelativeUrls(csQueryHtml);
+            ModifyJavascriptRelativeUrls(csQueryHtml);
+            ModifyImageRelativeUrls(csQueryHtml);
 
             string resultHtml = cqDocument.Render();
 
@@ -97,6 +99,32 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
                 if (item.HasAttribute("href"))
                 {
                     item.Attributes["href"] = GetHtmlRelativeUrl(item.Attributes["href"]);
+                }
+            }
+        }
+
+        private void ModifyJavascriptRelativeUrls(CQ htmlDom)
+        {
+            CQ select = htmlDom.Select("script");
+
+            foreach (var item in select)
+            {
+                if (item.HasAttribute("src"))
+                {
+                    item.Attributes["src"] = GetHtmlRelativeUrl(item.Attributes["src"]);
+                }
+            }
+        }
+
+        private void ModifyImageRelativeUrls(CQ htmlDom)
+        {
+            CQ select = htmlDom.Select("img");
+
+            foreach (var item in select)
+            {
+                if (item.HasAttribute("src"))
+                {
+                    item.Attributes["src"] = GetHtmlRelativeUrl(item.Attributes["src"]);
                 }
             }
         }
