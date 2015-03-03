@@ -6,6 +6,8 @@ using System.Text;
 using CsQuery;
 using EPiPugPigConnector.EPiExtensions;
 using EPiPugPigConnector.Helpers;
+using EPiPugPigConnector.HttpModules.CustomHtml.Observables;
+using EPiPugPigConnector.HttpModules.CustomHtml.Subject;
 using EPiPugPigConnector.Utils;
 using EPiServer;
 using EPiServer.Core;
@@ -19,12 +21,12 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
     {
         private readonly Stream filter;
         private readonly MemoryStream cacheStream = new MemoryStream();
-        private System.Uri currentRequestUri;
+        private readonly System.Uri _currentRequestUri;
 
         public CustomHtmlStream(Stream filter, System.Uri currentRequestUri)
         {
             this.filter = filter;
-            this.currentRequestUri = currentRequestUri;
+            this._currentRequestUri = currentRequestUri;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -55,26 +57,53 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
 
             //adds the .manifest src to the html element, (makes it easier to test the manifest in regular webbrowsers
             // as opposed to only testing via pugpig reader xml. )
-            CQ cqDocument = new CQ(htmlDocument);
-            var csQueryHtml = cqDocument.Select("html");
+            
+            var htmlStreamProcessor = new HtmlStreamProcessor();
 
-            if (csQueryHtml.Length > 0)
-            {
-                string manifestUrl = GetManifestUrl(currentRequestUri);
-                csQueryHtml.Attr("manifest", manifestUrl);
-            }
+            htmlStreamProcessor
+                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "link", "href"))
+                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "script", "src"))
+                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "img", "src"))
+                .AddModifier(new ManifestUrlModifier(_currentRequestUri))
+                .AddModifier(new RelativeHrefUrlModifier(_currentRequestUri, "a", "href"));
 
-            ModifyHtmlWithRelativeAnchorLinkUrls(csQueryHtml);
-            ModifyCssWithRelativeUrls(csQueryHtml);
-            ModifyJavascriptRelativeUrls(csQueryHtml);
-            ModifyImageRelativeUrls(csQueryHtml);
-
-            string resultHtml = cqDocument.Render();
-
+            var resultHtml = htmlStreamProcessor.ProcessHtml(htmlDocument);
+            
             var timeElapsed = timer.Stop();
 
             return resultHtml;
         }
+
+        //private string ModifyHtmlOutput(string htmlDocument)
+        //{
+        //    StopwatchTimer timer = new StopwatchTimer();
+
+        //    //adds the .manifest src to the html element, (makes it easier to test the manifest in regular webbrowsers
+        //    // as opposed to only testing via pugpig reader xml. )
+        //    CQ cqDocument = new CQ(htmlDocument);
+
+        //    var customHtmlStreamSubject = new HtmlStreamProcessor();
+
+
+        //    var csQueryHtml = cqDocument.Select("html");
+
+        //    if (csQueryHtml.Length > 0)
+        //    {
+        //        string manifestUrl = GetManifestUrl(currentRequestUri);
+        //        csQueryHtml.Attr("manifest", manifestUrl);
+        //    }
+
+        //    ModifyHtmlWithRelativeAnchorLinkUrls(csQueryHtml);
+        //    ModifyCssWithRelativeUrls(csQueryHtml);
+        //    ModifyJavascriptRelativeUrls(csQueryHtml);
+        //    ModifyImageRelativeUrls(csQueryHtml);
+
+        //    string resultHtml = cqDocument.Render();
+
+        //    var timeElapsed = timer.Stop();
+
+        //    return resultHtml;
+        //}
 
         private void ModifyHtmlWithRelativeAnchorLinkUrls(CQ htmlDom)
         {
@@ -146,7 +175,7 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
         private string GetHtmlRelativeUrl(string url)
         {
             var abslouteUrl = UrlHelper.GetAbslouteUrl(url);
-            var relativeUrl = UrlHelper.GetRelativeUrl(currentRequestUri.ToString(), abslouteUrl);
+            var relativeUrl = UrlHelper.GetRelativeUrl(_currentRequestUri.ToString(), abslouteUrl);
 
             return relativeUrl;
         }
@@ -175,7 +204,7 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
         {
             string url = string.Empty;
 
-            UrlBuilder urlBuilder = new UrlBuilder(currentRequestUri);
+            UrlBuilder urlBuilder = new UrlBuilder(_currentRequestUri);
 
             return string.Format("{0}.manifest", urlBuilder.Path);
 

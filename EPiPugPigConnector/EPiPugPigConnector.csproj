@@ -195,6 +195,13 @@
     <Compile Include="Editions\Interfaces\Edition\IEditionEntryElement.cs" />
     <Compile Include="Editions\Interfaces\Edition\IEditionFeedElement.cs" />
     <Compile Include="Fakes\FakeWebClientFactory.cs" />
+    <Compile Include="HttpModules\CustomHtml\Interfaces\IHtmlStreamModifier.cs" />
+    <Compile Include="HttpModules\CustomHtml\Interfaces\IHtmlStreamProcessor.cs" />
+    <Compile Include="HttpModules\CustomHtml\Observables\ManifestUrlModifier.cs" />
+    <Compile Include="HttpModules\CustomHtml\Observables\RelativeHrefUrlModifier.cs" />
+    <Compile Include="HttpModules\CustomHtml\Observables\RelativeUrlModifier.cs" />
+    <Compile Include="HttpModules\CustomHtml\Observables\UrlModifierBase.cs" />
+    <Compile Include="HttpModules\CustomHtml\Subject\HtmlStreamProcessor.cs" />
     <Compile Include="WebClients\IWebClient.cs" />
     <Compile Include="ExtensionMethods\EnumExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
