@@ -1,23 +1,28 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using EPiPugPigConnector.HtmlCrawlers.CustomHtml.Generator;
-using EPiPugPigConnector.HtmlCrawlers.CustomHtml.Modifiers;
-using EPiPugPigConnector.Utils;
+using EPiPugPigConnector.Caching;
+using EPiPugPigConnector.HtmlCrawlers.Manifest.Crawlers;
+using EPiPugPigConnector.HtmlCrawlers.Manifest.Generator;
+using EPiPugPigConnector.WebClients;
 
-namespace EPiPugPigConnector.HttpModules.CustomHtml
+namespace EPiPugPigConnector.HttpModules.Manifest
 {
     //From: http://patrickdesjardins.com/blog/modify-the-html-output-of-any-of-your-page-before-rendering
-    public class CustomHtmlStream : Stream
+    public class ManifestStream : Stream
     {
         private readonly Stream _filter;
+        private readonly System.Uri _currentRequestUri;
+        private readonly IWebClient _webClient;
         private readonly MemoryStream _cacheStream = new MemoryStream();
-        private readonly Uri _currentRequestUri;
 
-        public CustomHtmlStream(Stream filter, Uri currentRequestUri)
+        public bool HasError { get; set; }
+
+        public ManifestStream(Stream filter, System.Uri currentRequestUri, IWebClient webClient)
         {
             this._filter = filter;
             this._currentRequestUri = currentRequestUri;
+            _webClient = webClient;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
@@ -31,38 +36,43 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml
             {
                 string htmlDocument = Encoding.UTF8.GetString(_cacheStream.ToArray(), 0, (int)_cacheStream.Length);
 
-                //Modify html output here.
-                htmlDocument = ModifyHtmlOutput(htmlDocument);
+                //Get the manifest
+                htmlDocument = GetManifest(htmlDocument);
 
                 var buffer = Encoding.UTF8.GetBytes(htmlDocument);
-                _filter.Write(buffer, 0, buffer.Length);
+                this._filter.Write(buffer, 0, buffer.Length);
                 _cacheStream.SetLength(0);
             }
 
-            _filter.Flush();
+            this._filter.Flush();
         }
 
-        private string ModifyHtmlOutput(string htmlDocument)
+        private string GetManifest(string htmlDocument)
         {
-            StopwatchTimer timer = new StopwatchTimer();
+            string cacheKey = _currentRequestUri.ToString(); //should map against page.GetFriendlyUrl(includeHost: true)
+            var cacheType = PugPigCacheType.Manifest;
 
-            //adds the .manifest src to the html element, (makes it easier to test the manifest in regular webbrowsers
-            // as opposed to only testing via pugpig reader xml. )
+            //if (PugPigCache.IsSet(cacheType, cacheKey))
+            //{
+            //    //Get from cache
+            //    return (string)PugPigCache.Get(cacheType, cacheKey);
+            //}
+            //else
+            //{
+
+            var manifestGenerator = new ManifestGenerator();
+            manifestGenerator
+                .AddCrawler(new RelativeUrlCrawler(_currentRequestUri, "link", "href"))
+                .AddCrawler(new RelativeUrlCrawler(_currentRequestUri, "script", "src"))
+                .AddCrawler(new RelativeUrlCrawler(_currentRequestUri, "img", "src"))
+                .AddCrawler(new CssCrawler(_webClient, _currentRequestUri));
+
+            var manifestFile = manifestGenerator.GenerateManifest(htmlDocument);
             
-            var htmlStreamProcessor = new HtmlGenerator();
-
-            htmlStreamProcessor
-                .AddModifier(new ManifestUrlModifier(_currentRequestUri))
-                .AddModifier(new RelativeHrefUrlModifier(_currentRequestUri, "a", "href"))
-                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "link", "href"))
-                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "script", "src"))
-                .AddModifier(new RelativeUrlModifier(_currentRequestUri, "img", "src"));
-                
-            var resultHtml = htmlStreamProcessor.GenerateHtml(htmlDocument);
-            
-            var timeElapsed = timer.Stop();
-
-            return resultHtml;
+            //Add to cache
+            PugPigCache.Set(cacheType, cacheKey, htmlDocument);
+            return manifestFile;
+            //}
         }
 
         public override long Seek(long offset, SeekOrigin origin)

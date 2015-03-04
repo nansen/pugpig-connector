@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CsQuery;
-using EPiPugPigConnector.HttpModules.CustomHtml.Interfaces;
+using EPiPugPigConnector.HtmlCrawlers.Interfaces;
 using EPiServer;
 
-namespace EPiPugPigConnector.HttpModules.CustomHtml.Observables
+namespace EPiPugPigConnector.HtmlCrawlers.CustomHtml.Modifiers
 {
     /// <summary>
     /// Adds the manifest url to the html tag.
     /// </summary>
-    public class ManifestUrlModifier : IHtmlStreamModifier
+    public class ManifestUrlModifier : IHtmlModifier
     {
         private readonly Uri _currentRequestUri;
 

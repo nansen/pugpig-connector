@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.MicroKernel.Lifestyle;
 using CsQuery;
 using EPiPugPigConnector.Helpers;
-using EPiPugPigConnector.HttpModules.CustomHtml.Interfaces;
+using EPiPugPigConnector.HtmlCrawlers.Interfaces;
 
-namespace EPiPugPigConnector.HttpModules.CustomHtml.Observables
+namespace EPiPugPigConnector.HtmlCrawlers.CustomHtml.Modifiers
 {
-    public abstract class UrlModifierBase : IHtmlStreamModifier
+    public abstract class UrlModifierBase : IHtmlModifier
     {
         protected readonly Uri CurrentRequestUri;
         protected readonly string Element;

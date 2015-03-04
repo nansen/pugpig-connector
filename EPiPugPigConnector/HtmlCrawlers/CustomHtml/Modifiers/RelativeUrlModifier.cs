@@ -1,13 +1,14 @@
 ﻿using System;
 using CsQuery;
-using EPiPugPigConnector.Helpers;
 
-namespace EPiPugPigConnector.HttpModules.CustomHtml.Observables
+namespace EPiPugPigConnector.HtmlCrawlers.CustomHtml.Modifiers
 {
-
-    public class RelativeHrefUrlModifier : UrlModifierBase
+    /// <summary>
+    /// Modifies the given attribute, modifies the url to a relative url of the current request url
+    /// </summary>
+    public class RelativeUrlModifier : UrlModifierBase
     {
-        public RelativeHrefUrlModifier(Uri currentRequestUri, string element, string attribute)
+        public RelativeUrlModifier(Uri currentRequestUri, string element, string attribute)
             : base(currentRequestUri, element, attribute)
         {
         }
@@ -24,7 +25,6 @@ namespace EPiPugPigConnector.HttpModules.CustomHtml.Observables
                 if (item.HasAttribute(Attribute))
                 {
                     item.Attributes[Attribute] = GetHtmlRelativeUrl(item.Attributes[Attribute]);
-                    item.Attributes[Attribute] = HtmlHelper.FriendlyUrlToUrlWithExtension(item.Attributes[Attribute], "html");
                 }
             }
 

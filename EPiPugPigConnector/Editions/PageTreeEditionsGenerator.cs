@@ -40,7 +40,6 @@ namespace EPiPugPigConnector.Editions
                 string errorMessage = "The editions container page or editions childpages was not found/not published.";
                 LogHelper.Log(errorMessage);
                 throw new NullReferenceException(errorMessage);
-                return errorMessage;
             }
 
             return EditionsXmlFactory.GenerateXmlFrom(containerPage.ContentLink, containerPage, editionEntries);

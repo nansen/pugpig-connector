@@ -28,7 +28,7 @@ namespace EPiPugPigConnector.HttpModules.Manifest
             if (httpApplication.Request.RawUrl.ToLower().EndsWith(Constants.MANIFEST_FILE_EXTENSION))
             {
                 //Process current html page with CustomHtmlStream:
-                httpApplication.Response.Filter = new CustomHtmlStream(httpApplication.Response.Filter, httpApplication.Request.Url, _webClient);
+                httpApplication.Response.Filter = new ManifestStream(httpApplication.Response.Filter, httpApplication.Request.Url, _webClient);
                 
                 var context = httpApplication.Context;
                 context.Response.StatusCode = 200;
