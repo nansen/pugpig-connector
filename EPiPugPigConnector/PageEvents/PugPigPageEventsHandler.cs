@@ -127,7 +127,7 @@ namespace EPiPugPigConnector.PageEvents
                 var clone = page.CreateWritableClone();
                 clone.SetChangedOnPublish = true; 
                 clone.Changed = changed;
-                DataFactory.Instance.Save(clone, SaveAction.ForceCurrentVersion); //avoids triggering the published event again.
+                DataFactory.Instance.Save(clone,  SaveAction.ForceNewVersion); //avoids triggering the published event again.
                 LogPageChanged(page);
 
                 //remove page from episerver cache
